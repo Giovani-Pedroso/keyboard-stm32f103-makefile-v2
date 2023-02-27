@@ -1,0 +1,210 @@
+ARM GAS  /tmp/ccQdG6ed.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"check_keys.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Drivers/keyboard/check_keys.c"
+  18              		.section	.text.check_keys_task,"ax",%progbits
+  19              		.align	1
+  20              		.global	check_keys_task
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	check_keys_task:
+  26              	.LVL0:
+  27              	.LFB69:
+   1:Drivers/keyboard/check_keys.c **** #include "left.h"
+   2:Drivers/keyboard/check_keys.c **** #include "FreeRTOS.h"
+   3:Drivers/keyboard/check_keys.c **** #include "MCP23017.h"
+   4:Drivers/keyboard/check_keys.c **** #include "main.h"
+   5:Drivers/keyboard/check_keys.c **** #include "portmacro.h"
+   6:Drivers/keyboard/check_keys.c **** #include "rigth.h"
+   7:Drivers/keyboard/check_keys.c **** #include "stm32f1xx_hal.h"
+   8:Drivers/keyboard/check_keys.c **** #include "stm32f1xx_hal_i2c.h"
+   9:Drivers/keyboard/check_keys.c **** #include "task.h"
+  10:Drivers/keyboard/check_keys.c **** #include "usb_send.h"
+  11:Drivers/keyboard/check_keys.c **** #include <stdint.h>
+  12:Drivers/keyboard/check_keys.c **** #include "check_keys.h"
+  13:Drivers/keyboard/check_keys.c **** 
+  14:Drivers/keyboard/check_keys.c **** extern I2C_HandleTypeDef hi2c1;
+  15:Drivers/keyboard/check_keys.c **** 
+  16:Drivers/keyboard/check_keys.c **** void check_keys_task(void *vparams) {
+  28              		.loc 1 16 37 view -0
+  29              		.cfi_startproc
+  30              		@ Volatile: function does not return.
+  31              		@ args = 0, pretend = 0, frame = 0
+  32              		@ frame_needed = 0, uses_anonymous_args = 0
+  33              		.loc 1 16 37 is_stmt 0 view .LVU1
+  34 0000 08B5     		push	{r3, lr}
+  35              	.LCFI0:
+  36              		.cfi_def_cfa_offset 8
+  37              		.cfi_offset 3, -8
+  38              		.cfi_offset 14, -4
+  17:Drivers/keyboard/check_keys.c **** 
+  18:Drivers/keyboard/check_keys.c ****   /* I2C_HandleTypeDef *i2c = (I2C_HandleTypeDef *)vparams; */
+  19:Drivers/keyboard/check_keys.c **** 
+  20:Drivers/keyboard/check_keys.c ****   MCP23017_init(&hi2c1);
+ARM GAS  /tmp/ccQdG6ed.s 			page 2
+
+
+  39              		.loc 1 20 3 is_stmt 1 view .LVU2
+  40 0002 0A48     		ldr	r0, .L4
+  41              	.LVL1:
+  42              		.loc 1 20 3 is_stmt 0 view .LVU3
+  43 0004 FFF7FEFF 		bl	MCP23017_init
+  44              	.LVL2:
+  21:Drivers/keyboard/check_keys.c **** 
+  22:Drivers/keyboard/check_keys.c ****   // Additional configuration to use the pins pb3 and pb4
+  23:Drivers/keyboard/check_keys.c ****   RCC->APB2ENR |= RCC_APB2ENR_AFIOEN;
+  45              		.loc 1 23 3 is_stmt 1 view .LVU4
+  46              		.loc 1 23 6 is_stmt 0 view .LVU5
+  47 0008 094A     		ldr	r2, .L4+4
+  48 000a 9369     		ldr	r3, [r2, #24]
+  49              		.loc 1 23 16 view .LVU6
+  50 000c 43F00103 		orr	r3, r3, #1
+  51 0010 9361     		str	r3, [r2, #24]
+  24:Drivers/keyboard/check_keys.c ****   AFIO->MAPR = AFIO_MAPR_SWJ_CFG_1;
+  52              		.loc 1 24 3 is_stmt 1 view .LVU7
+  53              		.loc 1 24 14 is_stmt 0 view .LVU8
+  54 0012 084B     		ldr	r3, .L4+8
+  55 0014 4FF00072 		mov	r2, #33554432
+  56 0018 5A60     		str	r2, [r3, #4]
+  57              	.L2:
+  25:Drivers/keyboard/check_keys.c **** 
+  26:Drivers/keyboard/check_keys.c ****   while (1) {
+  58              		.loc 1 26 3 is_stmt 1 discriminator 1 view .LVU9
+  27:Drivers/keyboard/check_keys.c ****     left_check_keys();
+  59              		.loc 1 27 5 discriminator 1 view .LVU10
+  60 001a FFF7FEFF 		bl	left_check_keys
+  61              	.LVL3:
+  28:Drivers/keyboard/check_keys.c ****     right_check_keys();
+  62              		.loc 1 28 5 discriminator 1 view .LVU11
+  63 001e FFF7FEFF 		bl	right_check_keys
+  64              	.LVL4:
+  29:Drivers/keyboard/check_keys.c **** 		vTaskDelay(10/ portTICK_PERIOD_MS);
+  65              		.loc 1 29 3 discriminator 1 view .LVU12
+  66 0022 0A20     		movs	r0, #10
+  67 0024 FFF7FEFF 		bl	vTaskDelay
+  68              	.LVL5:
+  26:Drivers/keyboard/check_keys.c ****     left_check_keys();
+  69              		.loc 1 26 9 discriminator 1 view .LVU13
+  70 0028 F7E7     		b	.L2
+  71              	.L5:
+  72 002a 00BF     		.align	2
+  73              	.L4:
+  74 002c 00000000 		.word	hi2c1
+  75 0030 00100240 		.word	1073876992
+  76 0034 00000140 		.word	1073807360
+  77              		.cfi_endproc
+  78              	.LFE69:
+  80              		.section	.rodata.check_keys_task_init.str1.4,"aMS",%progbits,1
+  81              		.align	2
+  82              	.LC0:
+  83 0000 63686563 		.ascii	"check_keys_task\000"
+  83      6B5F6B65 
+  83      79735F74 
+  83      61736B00 
+ARM GAS  /tmp/ccQdG6ed.s 			page 3
+
+
+  84              		.section	.text.check_keys_task_init,"ax",%progbits
+  85              		.align	1
+  86              		.global	check_keys_task_init
+  87              		.syntax unified
+  88              		.thumb
+  89              		.thumb_func
+  91              	check_keys_task_init:
+  92              	.LFB70:
+  30:Drivers/keyboard/check_keys.c ****   }
+  31:Drivers/keyboard/check_keys.c **** }
+  32:Drivers/keyboard/check_keys.c **** 
+  33:Drivers/keyboard/check_keys.c **** void check_keys_task_init() {
+  93              		.loc 1 33 29 view -0
+  94              		.cfi_startproc
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97 0000 00B5     		push	{lr}
+  98              	.LCFI1:
+  99              		.cfi_def_cfa_offset 4
+ 100              		.cfi_offset 14, -4
+ 101 0002 83B0     		sub	sp, sp, #12
+ 102              	.LCFI2:
+ 103              		.cfi_def_cfa_offset 16
+  34:Drivers/keyboard/check_keys.c ****   xTaskCreate(&check_keys_task, "check_keys_task",
+ 104              		.loc 1 34 3 view .LVU15
+ 105 0004 0023     		movs	r3, #0
+ 106 0006 0193     		str	r3, [sp, #4]
+ 107 0008 0522     		movs	r2, #5
+ 108 000a 0092     		str	r2, [sp]
+ 109 000c 6422     		movs	r2, #100
+ 110 000e 0349     		ldr	r1, .L8
+ 111 0010 0348     		ldr	r0, .L8+4
+ 112 0012 FFF7FEFF 		bl	xTaskCreate
+ 113              	.LVL6:
+  35:Drivers/keyboard/check_keys.c ****               CHECK_KEYS_SIZE, NULL,
+  36:Drivers/keyboard/check_keys.c ****               CHECK_KEYS_PRIORITY, NULL);
+  37:Drivers/keyboard/check_keys.c **** }
+ 114              		.loc 1 37 1 is_stmt 0 view .LVU16
+ 115 0016 03B0     		add	sp, sp, #12
+ 116              	.LCFI3:
+ 117              		.cfi_def_cfa_offset 4
+ 118              		@ sp needed
+ 119 0018 5DF804FB 		ldr	pc, [sp], #4
+ 120              	.L9:
+ 121              		.align	2
+ 122              	.L8:
+ 123 001c 00000000 		.word	.LC0
+ 124 0020 00000000 		.word	check_keys_task
+ 125              		.cfi_endproc
+ 126              	.LFE70:
+ 128              		.text
+ 129              	.Letext0:
+ 130              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 131              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 132              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 133              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 134              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ARM GAS  /tmp/ccQdG6ed.s 			page 4
+
+
+ 135              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
+ 136              		.file 8 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
+ 137              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/portmacro.h"
+ 138              		.file 10 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 139              		.file 11 "Drivers/MCP23017/MCP23017.h"
+ 140              		.file 12 "Drivers/keyboard/rigth.h"
+ 141              		.file 13 "Drivers/keyboard/left.h"
+ARM GAS  /tmp/ccQdG6ed.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 check_keys.c
+     /tmp/ccQdG6ed.s:19     .text.check_keys_task:0000000000000000 $t
+     /tmp/ccQdG6ed.s:25     .text.check_keys_task:0000000000000000 check_keys_task
+     /tmp/ccQdG6ed.s:74     .text.check_keys_task:000000000000002c $d
+     /tmp/ccQdG6ed.s:81     .rodata.check_keys_task_init.str1.4:0000000000000000 $d
+     /tmp/ccQdG6ed.s:85     .text.check_keys_task_init:0000000000000000 $t
+     /tmp/ccQdG6ed.s:91     .text.check_keys_task_init:0000000000000000 check_keys_task_init
+     /tmp/ccQdG6ed.s:123    .text.check_keys_task_init:000000000000001c $d
+
+UNDEFINED SYMBOLS
+MCP23017_init
+left_check_keys
+right_check_keys
+vTaskDelay
+hi2c1
+xTaskCreate

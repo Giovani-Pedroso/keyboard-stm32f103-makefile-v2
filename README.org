@@ -6,7 +6,7 @@
 + [x]  initialized the freeRtos the usb send the commands
 + [x] with the I2C initialized
 + [x] with the gpio initialied
-+ [ ] with the old makefile
++ [x] with the old makefile
 + [ ] with the sd1306 initialized
 + [ ]with the mcp23017 initialied
 + [ ] with the tasks running

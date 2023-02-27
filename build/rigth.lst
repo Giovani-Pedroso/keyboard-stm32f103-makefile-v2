@@ -1,0 +1,205 @@
+ARM GAS  /tmp/ccRpcH81.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"rigth.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.file 1 "Drivers/keyboard/rigth.c"
+  18              		.section	.text.left_check_keys,"ax",%progbits
+  19              		.align	1
+  20              		.global	left_check_keys
+  21              		.syntax unified
+  22              		.thumb
+  23              		.thumb_func
+  25              	left_check_keys:
+  26              	.LVL0:
+  27              	.LFB69:
+   1:Drivers/keyboard/rigth.c **** #include "rigth.h"
+   2:Drivers/keyboard/rigth.c **** #include "FreeRTOS.h"
+   3:Drivers/keyboard/rigth.c **** #include "MCP23017.h"
+   4:Drivers/keyboard/rigth.c **** #include "left.h"
+   5:Drivers/keyboard/rigth.c **** #include "main.h"
+   6:Drivers/keyboard/rigth.c **** #include "portmacro.h"
+   7:Drivers/keyboard/rigth.c **** #include "ssd1306.h"
+   8:Drivers/keyboard/rigth.c **** #include "stm32f1xx_hal.h"
+   9:Drivers/keyboard/rigth.c **** #include "stm32f1xx_hal_i2c.h"
+  10:Drivers/keyboard/rigth.c **** #include "task.h"
+  11:Drivers/keyboard/rigth.c **** #include "usb_send.h"
+  12:Drivers/keyboard/rigth.c **** #include <stdint.h>
+  13:Drivers/keyboard/rigth.c **** 
+  14:Drivers/keyboard/rigth.c **** extern I2C_HandleTypeDef hi2c1;
+  15:Drivers/keyboard/rigth.c **** char test_carh_keft[8] = {'0','1','2','3','4','5','6','7'};
+  16:Drivers/keyboard/rigth.c **** void left_check_keys(I2C_HandleTypeDef *i2c) {
+  28              		.loc 1 16 46 view -0
+  29              		.cfi_startproc
+  30              		@ args = 0, pretend = 0, frame = 0
+  31              		@ frame_needed = 0, uses_anonymous_args = 0
+  32              		.loc 1 16 46 is_stmt 0 view .LVU1
+  33 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
+  34              	.LCFI0:
+  35              		.cfi_def_cfa_offset 24
+  36              		.cfi_offset 3, -24
+  37              		.cfi_offset 4, -20
+  38              		.cfi_offset 5, -16
+  39              		.cfi_offset 6, -12
+  40              		.cfi_offset 7, -8
+  41              		.cfi_offset 14, -4
+  17:Drivers/keyboard/rigth.c ****   /*
+ARM GAS  /tmp/ccRpcH81.s 			page 2
+
+
+  18:Drivers/keyboard/rigth.c ****           TWO KEYS ARE NOT WORKING
+  19:Drivers/keyboard/rigth.c ****           w - working, n - not working
+  20:Drivers/keyboard/rigth.c ****                                         Display board
+  21:Drivers/keyboard/rigth.c ****           [w] [w] [X] [w] [w] [w]
+  22:Drivers/keyboard/rigth.c ****           [w] [w] [w] [w] [w] [w]
+  23:Drivers/keyboard/rigth.c ****           [w] [w] [w] [w] [w] [w]
+  24:Drivers/keyboard/rigth.c ****           [w] [w] [w] [w] [w] [n]
+  25:Drivers/keyboard/rigth.c ****           [w] [w] [w] [w] [w] [Y]
+  26:Drivers/keyboard/rigth.c ****                                         X - is always pressed
+  27:Drivers/keyboard/rigth.c ****                                         Y - Is not registering press
+  28:Drivers/keyboard/rigth.c ****    */
+  29:Drivers/keyboard/rigth.c ****   // Rows - ok
+  30:Drivers/keyboard/rigth.c ****   for (int j = 4; j >=0; j--) {
+  42              		.loc 1 30 3 is_stmt 1 view .LVU2
+  43              	.LBB2:
+  44              		.loc 1 30 8 view .LVU3
+  45              	.LVL1:
+  46              		.loc 1 30 12 is_stmt 0 view .LVU4
+  47 0002 0426     		movs	r6, #4
+  48              		.loc 1 30 3 view .LVU5
+  49 0004 10E0     		b	.L2
+  50              	.LVL2:
+  51              	.L4:
+  52              	.LBB3:
+  31:Drivers/keyboard/rigth.c ****     MCP23017_high_all_b_except(&hi2c1, j);
+  32:Drivers/keyboard/rigth.c ****     for (int i = 0; i < 6; i++) {
+  53              		.loc 1 32 29 is_stmt 1 discriminator 2 view .LVU6
+  54 0006 0134     		adds	r4, r4, #1
+  55              	.LVL3:
+  56              	.L3:
+  57              		.loc 1 32 23 discriminator 1 view .LVU7
+  58 0008 052C     		cmp	r4, #5
+  59 000a 0CDC     		bgt	.L8
+  33:Drivers/keyboard/rigth.c ****       if (MCP23017_read_pin_port_a(&hi2c1, i)) {
+  60              		.loc 1 33 7 view .LVU8
+  61              		.loc 1 33 11 is_stmt 0 view .LVU9
+  62 000c E5B2     		uxtb	r5, r4
+  63 000e 2946     		mov	r1, r5
+  64 0010 0A48     		ldr	r0, .L10
+  65 0012 FFF7FEFF 		bl	MCP23017_read_pin_port_a
+  66              	.LVL4:
+  67              		.loc 1 33 10 view .LVU10
+  68 0016 0028     		cmp	r0, #0
+  69 0018 F5D0     		beq	.L4
+  34:Drivers/keyboard/rigth.c ****         /* usb_sender_test('r', test_carh_keft[i], test_carh_keft[j]); */
+  35:Drivers/keyboard/rigth.c ****         /* usb_sender_test('r', test_carh_keft[i], test_carh_keft[j]); */
+  36:Drivers/keyboard/rigth.c ****         usb_send('r', j, i);
+  70              		.loc 1 36 9 is_stmt 1 view .LVU11
+  71 001a 2A46     		mov	r2, r5
+  72 001c 3946     		mov	r1, r7
+  73 001e 7220     		movs	r0, #114
+  74 0020 FFF7FEFF 		bl	usb_send
+  75              	.LVL5:
+  76 0024 EFE7     		b	.L4
+  77              	.L8:
+  78              	.LBE3:
+  30:Drivers/keyboard/rigth.c ****     MCP23017_high_all_b_except(&hi2c1, j);
+ARM GAS  /tmp/ccRpcH81.s 			page 3
+
+
+  79              		.loc 1 30 27 discriminator 2 view .LVU12
+  80 0026 013E     		subs	r6, r6, #1
+  81              	.LVL6:
+  82              	.L2:
+  30:Drivers/keyboard/rigth.c ****     MCP23017_high_all_b_except(&hi2c1, j);
+  83              		.loc 1 30 21 discriminator 1 view .LVU13
+  84 0028 002E     		cmp	r6, #0
+  85 002a 06DB     		blt	.L9
+  31:Drivers/keyboard/rigth.c ****     for (int i = 0; i < 6; i++) {
+  86              		.loc 1 31 5 view .LVU14
+  87 002c F7B2     		uxtb	r7, r6
+  88 002e 3946     		mov	r1, r7
+  89 0030 0248     		ldr	r0, .L10
+  90 0032 FFF7FEFF 		bl	MCP23017_high_all_b_except
+  91              	.LVL7:
+  32:Drivers/keyboard/rigth.c ****       if (MCP23017_read_pin_port_a(&hi2c1, i)) {
+  92              		.loc 1 32 5 view .LVU15
+  93              	.LBB4:
+  32:Drivers/keyboard/rigth.c ****       if (MCP23017_read_pin_port_a(&hi2c1, i)) {
+  94              		.loc 1 32 10 view .LVU16
+  32:Drivers/keyboard/rigth.c ****       if (MCP23017_read_pin_port_a(&hi2c1, i)) {
+  95              		.loc 1 32 14 is_stmt 0 view .LVU17
+  96 0036 0024     		movs	r4, #0
+  32:Drivers/keyboard/rigth.c ****       if (MCP23017_read_pin_port_a(&hi2c1, i)) {
+  97              		.loc 1 32 5 view .LVU18
+  98 0038 E6E7     		b	.L3
+  99              	.LVL8:
+ 100              	.L9:
+  32:Drivers/keyboard/rigth.c ****       if (MCP23017_read_pin_port_a(&hi2c1, i)) {
+ 101              		.loc 1 32 5 view .LVU19
+ 102              	.LBE4:
+ 103              	.LBE2:
+  37:Drivers/keyboard/rigth.c ****       }
+  38:Drivers/keyboard/rigth.c ****     }
+  39:Drivers/keyboard/rigth.c ****   }
+  40:Drivers/keyboard/rigth.c **** }
+ 104              		.loc 1 40 1 view .LVU20
+ 105 003a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
+ 106              	.LVL9:
+ 107              	.L11:
+ 108              		.loc 1 40 1 view .LVU21
+ 109              		.align	2
+ 110              	.L10:
+ 111 003c 00000000 		.word	hi2c1
+ 112              		.cfi_endproc
+ 113              	.LFE69:
+ 115              		.global	test_carh_keft
+ 116              		.section	.data.test_carh_keft,"aw"
+ 117              		.align	2
+ 120              	test_carh_keft:
+ 121 0000 30313233 		.ascii	"01234567"
+ 121      34353637 
+ 122              		.text
+ 123              	.Letext0:
+ 124              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 125              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 126              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ARM GAS  /tmp/ccRpcH81.s 			page 4
+
+
+ 127              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ 128              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
+ 129              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
+ 130              		.file 8 "Drivers/ssd1306/ssd1306.h"
+ 131              		.file 9 "Drivers/usb_send/usb_send.h"
+ 132              		.file 10 "Drivers/MCP23017/MCP23017.h"
+ARM GAS  /tmp/ccRpcH81.s 			page 5
+
+
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 rigth.c
+     /tmp/ccRpcH81.s:19     .text.left_check_keys:0000000000000000 $t
+     /tmp/ccRpcH81.s:25     .text.left_check_keys:0000000000000000 left_check_keys
+     /tmp/ccRpcH81.s:111    .text.left_check_keys:000000000000003c $d
+     /tmp/ccRpcH81.s:120    .data.test_carh_keft:0000000000000000 test_carh_keft
+     /tmp/ccRpcH81.s:117    .data.test_carh_keft:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+MCP23017_read_pin_port_a
+usb_send
+MCP23017_high_all_b_except
+hi2c1
