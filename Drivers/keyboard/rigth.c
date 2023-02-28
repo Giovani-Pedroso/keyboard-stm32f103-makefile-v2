@@ -32,7 +32,6 @@ void left_check_keys(I2C_HandleTypeDef *i2c) {
     for (int i = 0; i < 6; i++) {
       if (MCP23017_read_pin_port_a(&hi2c1, i)) {
         /* usb_sender_test('r', test_carh_keft[i], test_carh_keft[j]); */
-        /* usb_sender_test('r', test_carh_keft[i], test_carh_keft[j]); */
         usb_send('r', j, i);
       }
     }

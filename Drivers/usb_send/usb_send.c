@@ -49,35 +49,37 @@ const uint8_t keyboard_keys_right_spc[5][6] = {
     KR_C2_L3_SPC, KR_C3_L3_SPC, KR_C4_L3_SPC, KR_C5_L3_SPC, KR_C0_L4_SPC,
     KR_C1_L4_SPC, KR_C2_L4_SPC, KR_C3_L4_SPC, KR_C4_L4_SPC, KR_C5_L4_SPC};
 
+char test_keys[7] = {'0', '1', '2', '3', '4', '5', '6'};
 /**
  * @breif - will write in the oled display the oring of the press
  * @parms - keyboard - the side of the keyboard
  * @parms - column - the column of the button
  * @parms - row - the row of the button
  * */
-void usb_sender_test(char keyboardSide, char column, char row) {
+void usb_sender_test(char keyboardSide, uint8_t column, uint8_t row) {
+  const char test_chars[6] = {'0', '1', '2', '3', '4', '5'};
+
   ssd1306_Fill(Black);
   ssd1306_SetCursor(0, 0);
   ssd1306_WriteString("K-", Font_7x10, White);
   ssd1306_WriteChar(keyboardSide, Font_7x10, White);
   ssd1306_WriteString(" Row-", Font_7x10, White);
-  ssd1306_WriteChar(row, Font_7x10, White);
+  ssd1306_WriteChar(test_chars[row], Font_7x10, White);
   ssd1306_WriteString(" Col-", Font_7x10, White);
-  ssd1306_WriteChar(column, Font_7x10, White);
+  ssd1306_WriteChar(test_chars[column], Font_7x10, White);
   ssd1306_UpdateScreen();
 
-  vTaskDelay(1000 / portTICK_PERIOD_MS);
+  vTaskDelay(400 / portTICK_PERIOD_MS);
   ssd1306_Fill(Black);
   ssd1306_UpdateScreen();
 }
 
 // This will that a command then saves it into a buffer
-
 void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
-
+  /* usb_sender_test(keyboarSide, test_keys[column], test_keys[row]); */
   extern keyboard_command_t keyboar_commands;
   uint8_t key = 0;
-
+  // usb_sender_test(keyboarSide, column, row);
   if (keyboarSide == 'l') {
     if (isFunctionPressed == 0)
       key = keyboard_keys_left[column][row];
@@ -138,52 +140,56 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
 void usb_send_task(void *vParams) {
 
   extern keyboard_command_t keyboar_commands;
+  static keyboard_command_t previous_comand;
+  uint8_t repeatKey = 0;
+  uint8_t prevKey = 0;
+  uint8_t jump = 0;
 
   while (1) {
-    // read the QUEUE
-    /* if (xQueueReceive(usb_send_queue, (void *)&command, 0) == pdTRUE) { */
-    /*   ssd1306_SetCursor(0, 0); */
-    /*   ssd1306_WriteChar(command.keycode_1, Font_7x10, White); */
-    /*   ssd1306_UpdateScreen(); */
-    /* } else { */
-    if (!keyboar_commands.keycode_1) {
-    } else {
+    jump = 0;
+    // Send the command if a key was pressed
+    if (keyboar_commands.keycode_1 || keyboar_commands.modifier_key) {
 
-      /*   ssd1306_SetCursor(0, 0); */
-      /*   ssd1306_WriteString("$-", Font_7x10, White); */
-      /*   ssd1306_WriteChar(keyboar_commands.keycode_1, Font_7x10, White); */
-      /*   ssd1306_WriteString(", ", Font_7x10, White); */
-      /*   ssd1306_WriteChar(keyboar_commands.keycode_2, Font_7x10, White); */
-      /*   ssd1306_WriteString(", ", Font_7x10, White); */
-      /*   ssd1306_WriteChar(keyboar_commands.keycode_3, Font_7x10, White); */
-      /*   ssd1306_WriteString(", ", Font_7x10, White); */
-      /*   ssd1306_WriteChar(keyboar_commands.keycode_4, Font_7x10, White); */
-      /*   ssd1306_WriteString(", ", Font_7x10, White); */
-      /*   ssd1306_WriteChar(keyboar_commands.keycode_5, Font_7x10, White); */
-      // Reset the keyboard_commands
+      /*
+if (repeatKey == 0 && prevKey == keyboar_commands.keycode_1) {
+for (uint8_t i = 0; i < 200; i++) {
+if (!keyboar_commands.keycode_1) {
+jump = 1;
+}
+if (prevKey != keyboar_commands.keycode_1)
+break;
+vTaskDelay(5 / portTICK_PERIOD_MS);
+}
+repeatKey = 1;
+}
 
+if (jump)
+continue;
+      */
+      prevKey = keyboar_commands.keycode_1;
       USBD_HID_SendReport(&hUsbDeviceFS, &keyboar_commands,
                           sizeof(keyboard_command_t));
-      vTaskDelay(80 / portTICK_PERIOD_MS);
+
+      vTaskDelay(30 / portTICK_PERIOD_MS);
+      // Reset the keyboard commands
       keyboar_commands.keycode_1 = 0;
       keyboar_commands.keycode_2 = 0;
       keyboar_commands.keycode_3 = 0;
       keyboar_commands.keycode_4 = 0;
       keyboar_commands.keycode_5 = 0;
       keyboar_commands.modifier_key = 0;
+      isFunctionPressed = 0;
+
       USBD_HID_SendReport(&hUsbDeviceFS, &keyboar_commands,
                           sizeof(keyboard_command_t));
-      vTaskDelay(100 / portTICK_PERIOD_MS);
-      /*   isFunctionPressed = 0; */
-      /*   ssd1306_UpdateScreen(); */
+      vTaskDelay(10 / portTICK_PERIOD_MS);
       /* vTaskDelay(200 / portTICK_PERIOD_MS); */
       /* ssd1306_Fill(Black); */
       /* ssd1306_UpdateScreen(); */
+    } else {
+      repeatKey = 0;
     }
-    /* } */
-
     vTaskDelay(10 / portTICK_PERIOD_MS);
-    // the the QUEUE to the usb
   }
 }
 

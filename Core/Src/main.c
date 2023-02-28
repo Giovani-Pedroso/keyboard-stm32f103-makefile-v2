@@ -3,6 +3,7 @@
 #include "check_keys.h"
 #include "cmsis_os.h"
 #include "left.h"
+#include "portmacro.h"
 #include "rigth.h"
 #include "ssd1306.h"
 #include "stm32f1xx_hal.h"
@@ -11,56 +12,7 @@
 #include "usb_send.h"
 #include "usbd_def.h"
 #include "usbd_hid.h"
-/* #include "MCP23017.h" */
 
-/* USER CODE BEGIN Header */
-/**
- ******************************************************************************
- * @file           : main.c
- * @brief          : Main program body
- ******************************************************************************
- * @attention
- *
- * Copyright (c) 2023 STMicroelectronics.
- * All rights reserved.
- *
- * This software is licensed under terms that can be found in the LICENSE file
- * in the root directory of this software component.
- * If no LICENSE file comes with this software, it is provided AS-IS.
- *
- ******************************************************************************
- */
-/* USER CODE END Header */
-/* Includes ------------------------------------------------------------------*/
-/* #include "main.h" */
-/* #include "cmsis_os.h" */
-/* #include "usb_device.h" */
-/* #include "usbd_def.h" */
-/* #include "FreeRTOS.h" */
-/* #include "task.h" */
-/* #include "check_keys.h" */
-/* #include "usb_send.h" */
-/* #include "usbd_hid.h" */
-/* Private includes ----------------------------------------------------------*/
-/* USER CODE BEGIN Includes */
-
-/* USER CODE END Includes */
-
-/* Private typedef -----------------------------------------------------------*/
-/* USER CODE BEGIN PTD */
-
-/* USER CODE END PTD */
-
-/* Private define ------------------------------------------------------------*/
-/* USER CODE BEGIN PD */
-/* USER CODE END PD */
-
-/* Private macro -------------------------------------------------------------*/
-/* USER CODE BEGIN PM */
-
-/* USER CODE END PM */
-
-/* Private variables ---------------------------------------------------------*/
 I2C_HandleTypeDef hi2c1;
 
 /* Definitions for defaultTask */
@@ -118,12 +70,12 @@ keyboard_command_t keyboar_commands;
  */
 void test_task(void *vparams) {
   while (1) {
-    buffer.KEYCODE0 = 0x11;
-    USBD_HID_SendReport(&hUsbDeviceFS, &buffer, sizeof(keyboardBuffer));
-    HAL_Delay(50);
-    buffer.KEYCODE0 = 0x00;
-    USBD_HID_SendReport(&hUsbDeviceFS, &buffer, sizeof(keyboardBuffer));
-    HAL_Delay(4000);
+		ssd1306_Fill(White);
+		ssd1306_UpdateScreen();
+		vTaskDelay(500/ portTICK_PERIOD_MS);
+		ssd1306_Fill(Black);
+		ssd1306_UpdateScreen();
+		vTaskDelay(500/ portTICK_PERIOD_MS);
   }
 }
 

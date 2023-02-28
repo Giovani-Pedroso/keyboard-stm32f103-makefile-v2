@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccRpcH81.s 			page 1
+ARM GAS  /tmp/cciAuTlE.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -58,7 +58,7 @@ ARM GAS  /tmp/ccRpcH81.s 			page 1
   40              		.cfi_offset 7, -8
   41              		.cfi_offset 14, -4
   17:Drivers/keyboard/rigth.c ****   /*
-ARM GAS  /tmp/ccRpcH81.s 			page 2
+ARM GAS  /tmp/cciAuTlE.s 			page 2
 
 
   18:Drivers/keyboard/rigth.c ****           TWO KEYS ARE NOT WORKING
@@ -106,9 +106,8 @@ ARM GAS  /tmp/ccRpcH81.s 			page 1
   68 0016 0028     		cmp	r0, #0
   69 0018 F5D0     		beq	.L4
   34:Drivers/keyboard/rigth.c ****         /* usb_sender_test('r', test_carh_keft[i], test_carh_keft[j]); */
-  35:Drivers/keyboard/rigth.c ****         /* usb_sender_test('r', test_carh_keft[i], test_carh_keft[j]); */
-  36:Drivers/keyboard/rigth.c ****         usb_send('r', j, i);
-  70              		.loc 1 36 9 is_stmt 1 view .LVU11
+  35:Drivers/keyboard/rigth.c ****         usb_send('r', j, i);
+  70              		.loc 1 35 9 is_stmt 1 view .LVU11
   71 001a 2A46     		mov	r2, r5
   72 001c 3946     		mov	r1, r7
   73 001e 7220     		movs	r0, #114
@@ -118,10 +117,10 @@ ARM GAS  /tmp/ccRpcH81.s 			page 1
   77              	.L8:
   78              	.LBE3:
   30:Drivers/keyboard/rigth.c ****     MCP23017_high_all_b_except(&hi2c1, j);
-ARM GAS  /tmp/ccRpcH81.s 			page 3
-
-
   79              		.loc 1 30 27 discriminator 2 view .LVU12
+ARM GAS  /tmp/cciAuTlE.s 			page 3
+
+
   80 0026 013E     		subs	r6, r6, #1
   81              	.LVL6:
   82              	.L2:
@@ -153,15 +152,15 @@ ARM GAS  /tmp/ccRpcH81.s 			page 1
  101              		.loc 1 32 5 view .LVU19
  102              	.LBE4:
  103              	.LBE2:
-  37:Drivers/keyboard/rigth.c ****       }
-  38:Drivers/keyboard/rigth.c ****     }
-  39:Drivers/keyboard/rigth.c ****   }
-  40:Drivers/keyboard/rigth.c **** }
- 104              		.loc 1 40 1 view .LVU20
+  36:Drivers/keyboard/rigth.c ****       }
+  37:Drivers/keyboard/rigth.c ****     }
+  38:Drivers/keyboard/rigth.c ****   }
+  39:Drivers/keyboard/rigth.c **** }
+ 104              		.loc 1 39 1 view .LVU20
  105 003a F8BD     		pop	{r3, r4, r5, r6, r7, pc}
  106              	.LVL9:
  107              	.L11:
- 108              		.loc 1 40 1 view .LVU21
+ 108              		.loc 1 39 1 view .LVU21
  109              		.align	2
  110              	.L10:
  111 003c 00000000 		.word	hi2c1
@@ -178,25 +177,25 @@ ARM GAS  /tmp/ccRpcH81.s 			page 1
  124              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
  125              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
  126              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
-ARM GAS  /tmp/ccRpcH81.s 			page 4
-
-
  127              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_def.h"
+ARM GAS  /tmp/cciAuTlE.s 			page 4
+
+
  128              		.file 6 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_dma.h"
  129              		.file 7 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h"
  130              		.file 8 "Drivers/ssd1306/ssd1306.h"
  131              		.file 9 "Drivers/usb_send/usb_send.h"
  132              		.file 10 "Drivers/MCP23017/MCP23017.h"
-ARM GAS  /tmp/ccRpcH81.s 			page 5
+ARM GAS  /tmp/cciAuTlE.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 rigth.c
-     /tmp/ccRpcH81.s:19     .text.left_check_keys:0000000000000000 $t
-     /tmp/ccRpcH81.s:25     .text.left_check_keys:0000000000000000 left_check_keys
-     /tmp/ccRpcH81.s:111    .text.left_check_keys:000000000000003c $d
-     /tmp/ccRpcH81.s:120    .data.test_carh_keft:0000000000000000 test_carh_keft
-     /tmp/ccRpcH81.s:117    .data.test_carh_keft:0000000000000000 $d
+     /tmp/cciAuTlE.s:19     .text.left_check_keys:0000000000000000 $t
+     /tmp/cciAuTlE.s:25     .text.left_check_keys:0000000000000000 left_check_keys
+     /tmp/cciAuTlE.s:111    .text.left_check_keys:000000000000003c $d
+     /tmp/cciAuTlE.s:120    .data.test_carh_keft:0000000000000000 test_carh_keft
+     /tmp/cciAuTlE.s:117    .data.test_carh_keft:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 MCP23017_read_pin_port_a

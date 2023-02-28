@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccBEZaTq.s 			page 1
+ARM GAS  /tmp/ccXxzDuz.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -50,18 +50,17 @@ ARM GAS  /tmp/ccBEZaTq.s 			page 1
   22:Drivers/keyboard/left.c ****     {GPIOA, GPIO_PIN_1}, {GPIOA, GPIO_PIN_0}, {GPIOA, GPIO_PIN_15},
   23:Drivers/keyboard/left.c ****     {GPIOA, GPIO_PIN_9}, {GPIOA, GPIO_PIN_8},
   24:Drivers/keyboard/left.c **** };
-  25:Drivers/keyboard/left.c **** char test_chars[6] = {'0', '1', '2', '3', '4', '5'};
-  26:Drivers/keyboard/left.c **** 
-  27:Drivers/keyboard/left.c **** const uint8_t nRows = sizeof(rows) / sizeof(Pins_t);
-  28:Drivers/keyboard/left.c **** const uint8_t nCols = sizeof(cols) / sizeof(Pins_t);
-  29:Drivers/keyboard/left.c **** 
-  30:Drivers/keyboard/left.c **** void right_check_keys() {
-  27              		.loc 1 30 25 view -0
+  25:Drivers/keyboard/left.c **** 
+  26:Drivers/keyboard/left.c **** const uint8_t nRows = sizeof(rows) / sizeof(Pins_t);
+  27:Drivers/keyboard/left.c **** const uint8_t nCols = sizeof(cols) / sizeof(Pins_t);
+  28:Drivers/keyboard/left.c **** 
+  29:Drivers/keyboard/left.c **** void right_check_keys() {
+  27              		.loc 1 29 25 view -0
   28              		.cfi_startproc
-ARM GAS  /tmp/ccBEZaTq.s 			page 2
-
-
   29              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccXxzDuz.s 			page 2
+
+
   30              		@ frame_needed = 0, uses_anonymous_args = 0
   31 0000 F8B5     		push	{r3, r4, r5, r6, r7, lr}
   32              	.LCFI0:
@@ -72,60 +71,60 @@ ARM GAS  /tmp/ccBEZaTq.s 			page 1
   37              		.cfi_offset 6, -12
   38              		.cfi_offset 7, -8
   39              		.cfi_offset 14, -4
-  31:Drivers/keyboard/left.c ****   /*
-  32:Drivers/keyboard/left.c ****           ALL WORKING
-  33:Drivers/keyboard/left.c ****           w - working, n - not working
-  34:Drivers/keyboard/left.c ****           STM-board
+  30:Drivers/keyboard/left.c ****   /*
+  31:Drivers/keyboard/left.c ****           ALL WORKING
+  32:Drivers/keyboard/left.c ****           w - working, n - not working
+  33:Drivers/keyboard/left.c ****           STM-board
+  34:Drivers/keyboard/left.c ****           [w] [w] [w] [w] [w] [w]
   35:Drivers/keyboard/left.c ****           [w] [w] [w] [w] [w] [w]
   36:Drivers/keyboard/left.c ****           [w] [w] [w] [w] [w] [w]
   37:Drivers/keyboard/left.c ****           [w] [w] [w] [w] [w] [w]
   38:Drivers/keyboard/left.c ****           [w] [w] [w] [w] [w] [w]
-  39:Drivers/keyboard/left.c ****           [w] [w] [w] [w] [w] [w]
-  40:Drivers/keyboard/left.c ****    */
-  41:Drivers/keyboard/left.c ****   // cols
-  42:Drivers/keyboard/left.c ****   for (int i = 0; i < nCols; i++) {
-  40              		.loc 1 42 3 view .LVU1
+  39:Drivers/keyboard/left.c ****    */
+  40:Drivers/keyboard/left.c ****   // cols
+  41:Drivers/keyboard/left.c ****   for (int i = 0; i < nCols; i++) {
+  40              		.loc 1 41 3 view .LVU1
   41              	.LBB2:
-  42              		.loc 1 42 8 view .LVU2
+  42              		.loc 1 41 8 view .LVU2
   43              	.LVL0:
-  44              		.loc 1 42 12 is_stmt 0 view .LVU3
+  44              		.loc 1 41 12 is_stmt 0 view .LVU3
   45 0002 0025     		movs	r5, #0
-  46              		.loc 1 42 3 view .LVU4
+  46              		.loc 1 41 3 view .LVU4
   47 0004 18E0     		b	.L2
   48              	.LVL1:
   49              	.L4:
   50              	.LBB3:
-  43:Drivers/keyboard/left.c ****     HAL_GPIO_WritePin(cols[i].port, cols[i].pin, GPIO_PIN_SET);
-  44:Drivers/keyboard/left.c ****     // rows
-  45:Drivers/keyboard/left.c ****     for (int j = nRows-1; j >=0; j--) {
-  51              		.loc 1 45 35 is_stmt 1 discriminator 2 view .LVU5
+  42:Drivers/keyboard/left.c ****     HAL_GPIO_WritePin(cols[i].port, cols[i].pin, GPIO_PIN_SET);
+  43:Drivers/keyboard/left.c ****     // rows
+  44:Drivers/keyboard/left.c ****     for (int j = nRows-1; j >=0; j--) {
+  51              		.loc 1 44 35 is_stmt 1 discriminator 2 view .LVU5
   52 0006 013C     		subs	r4, r4, #1
   53              	.LVL2:
   54              	.L3:
-  55              		.loc 1 45 29 discriminator 1 view .LVU6
+  55              		.loc 1 44 29 discriminator 1 view .LVU6
   56 0008 002C     		cmp	r4, #0
   57 000a 0FDB     		blt	.L8
-  46:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
-  58              		.loc 1 46 7 view .LVU7
-  59              		.loc 1 46 35 is_stmt 0 view .LVU8
+  45:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
+  58              		.loc 1 45 7 view .LVU7
+  59              		.loc 1 45 35 is_stmt 0 view .LVU8
   60 000c 124B     		ldr	r3, .L10
-  61              		.loc 1 46 49 view .LVU9
+  61              		.loc 1 45 49 view .LVU9
   62 000e 03EBC402 		add	r2, r3, r4, lsl #3
-  63              		.loc 1 46 11 view .LVU10
+  63              		.loc 1 45 11 view .LVU10
   64 0012 9188     		ldrh	r1, [r2, #4]
   65 0014 53F83400 		ldr	r0, [r3, r4, lsl #3]
   66 0018 FFF7FEFF 		bl	HAL_GPIO_ReadPin
   67              	.LVL3:
-  68              		.loc 1 46 10 view .LVU11
+  68              		.loc 1 45 10 view .LVU11
   69 001c 0028     		cmp	r0, #0
-ARM GAS  /tmp/ccBEZaTq.s 			page 3
-
-
   70 001e F2D0     		beq	.L4
-  47:Drivers/keyboard/left.c ****         // send the command to the usb
-  48:Drivers/keyboard/left.c ****         /* usb_sender_test('l', test_chars[i], test_chars[j]); */
-  49:Drivers/keyboard/left.c ****         usb_send('l', j, i);
-  71              		.loc 1 49 9 is_stmt 1 view .LVU12
+ARM GAS  /tmp/ccXxzDuz.s 			page 3
+
+
+  46:Drivers/keyboard/left.c ****         // send the command to the usb
+  47:Drivers/keyboard/left.c ****         //usb_sender_test('l', i, j);
+  48:Drivers/keyboard/left.c ****          usb_send('l', j, i); 
+  71              		.loc 1 48 10 is_stmt 1 view .LVU12
   72 0020 EAB2     		uxtb	r2, r5
   73 0022 E1B2     		uxtb	r1, r4
   74 0024 6C20     		movs	r0, #108
@@ -134,68 +133,68 @@ ARM GAS  /tmp/ccBEZaTq.s 			page 1
   77 002a ECE7     		b	.L4
   78              	.L8:
   79              	.LBE3:
-  50:Drivers/keyboard/left.c ****       }
-  51:Drivers/keyboard/left.c ****     }
-  52:Drivers/keyboard/left.c ****     HAL_GPIO_WritePin(cols[i].port, cols[i].pin, GPIO_PIN_RESET);
-  80              		.loc 1 52 5 discriminator 2 view .LVU13
+  49:Drivers/keyboard/left.c ****       }
+  50:Drivers/keyboard/left.c ****     }
+  51:Drivers/keyboard/left.c ****     HAL_GPIO_WritePin(cols[i].port, cols[i].pin, GPIO_PIN_RESET);
+  80              		.loc 1 51 5 discriminator 2 view .LVU13
   81 002c 0022     		movs	r2, #0
   82 002e 3946     		mov	r1, r7
   83 0030 3046     		mov	r0, r6
   84 0032 FFF7FEFF 		bl	HAL_GPIO_WritePin
   85              	.LVL5:
-  42:Drivers/keyboard/left.c ****     HAL_GPIO_WritePin(cols[i].port, cols[i].pin, GPIO_PIN_SET);
-  86              		.loc 1 42 31 discriminator 2 view .LVU14
+  41:Drivers/keyboard/left.c ****     HAL_GPIO_WritePin(cols[i].port, cols[i].pin, GPIO_PIN_SET);
+  86              		.loc 1 41 31 discriminator 2 view .LVU14
   87 0036 0135     		adds	r5, r5, #1
   88              	.LVL6:
   89              	.L2:
-  42:Drivers/keyboard/left.c ****     HAL_GPIO_WritePin(cols[i].port, cols[i].pin, GPIO_PIN_SET);
-  90              		.loc 1 42 21 discriminator 1 view .LVU15
+  41:Drivers/keyboard/left.c ****     HAL_GPIO_WritePin(cols[i].port, cols[i].pin, GPIO_PIN_SET);
+  90              		.loc 1 41 21 discriminator 1 view .LVU15
   91 0038 052D     		cmp	r5, #5
   92 003a 0CDC     		bgt	.L9
-  43:Drivers/keyboard/left.c ****     // rows
-  93              		.loc 1 43 5 view .LVU16
-  43:Drivers/keyboard/left.c ****     // rows
-  94              		.loc 1 43 30 is_stmt 0 view .LVU17
+  42:Drivers/keyboard/left.c ****     // rows
+  93              		.loc 1 42 5 view .LVU16
+  42:Drivers/keyboard/left.c ****     // rows
+  94              		.loc 1 42 30 is_stmt 0 view .LVU17
   95 003c 074B     		ldr	r3, .L10+4
   96 003e 53F83560 		ldr	r6, [r3, r5, lsl #3]
-  43:Drivers/keyboard/left.c ****     // rows
-  97              		.loc 1 43 44 view .LVU18
+  42:Drivers/keyboard/left.c ****     // rows
+  97              		.loc 1 42 44 view .LVU18
   98 0042 03EBC503 		add	r3, r3, r5, lsl #3
   99 0046 9F88     		ldrh	r7, [r3, #4]
-  43:Drivers/keyboard/left.c ****     // rows
- 100              		.loc 1 43 5 view .LVU19
+  42:Drivers/keyboard/left.c ****     // rows
+ 100              		.loc 1 42 5 view .LVU19
  101 0048 0122     		movs	r2, #1
  102 004a 3946     		mov	r1, r7
  103 004c 3046     		mov	r0, r6
  104 004e FFF7FEFF 		bl	HAL_GPIO_WritePin
  105              	.LVL7:
-  45:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
- 106              		.loc 1 45 5 is_stmt 1 view .LVU20
+  44:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
+ 106              		.loc 1 44 5 is_stmt 1 view .LVU20
  107              	.LBB4:
-  45:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
- 108              		.loc 1 45 10 view .LVU21
-  45:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
- 109              		.loc 1 45 14 is_stmt 0 view .LVU22
+  44:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
+ 108              		.loc 1 44 10 view .LVU21
+  44:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
+ 109              		.loc 1 44 14 is_stmt 0 view .LVU22
  110 0052 0424     		movs	r4, #4
-  45:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
-ARM GAS  /tmp/ccBEZaTq.s 			page 4
+  44:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
+ 111              		.loc 1 44 5 view .LVU23
+ARM GAS  /tmp/ccXxzDuz.s 			page 4
 
 
- 111              		.loc 1 45 5 view .LVU23
  112 0054 D8E7     		b	.L3
  113              	.LVL8:
  114              	.L9:
-  45:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
- 115              		.loc 1 45 5 view .LVU24
+  44:Drivers/keyboard/left.c ****       if (HAL_GPIO_ReadPin(rows[j].port, rows[j].pin)) {
+ 115              		.loc 1 44 5 view .LVU24
  116              	.LBE4:
  117              	.LBE2:
-  53:Drivers/keyboard/left.c ****   }
-  54:Drivers/keyboard/left.c **** }
- 118              		.loc 1 54 1 view .LVU25
+  52:Drivers/keyboard/left.c ****   }
+  53:Drivers/keyboard/left.c **** }
+ 118              		.loc 1 53 1 view .LVU25
  119 0056 F8BD     		pop	{r3, r4, r5, r6, r7, pc}
  120              	.LVL9:
  121              	.L11:
- 122              		.loc 1 54 1 view .LVU26
+ 122              		.loc 1 53 1 view .LVU26
  123              		.align	2
  124              	.L10:
  125 0058 00000000 		.word	rows
@@ -210,80 +209,72 @@ ARM GAS  /tmp/ccBEZaTq.s 			page 1
  137              		.section	.rodata.nRows,"a"
  140              	nRows:
  141 0000 05       		.byte	5
- 142              		.global	test_chars
- 143              		.section	.data.test_chars,"aw"
+ 142              		.global	rows
+ 143              		.section	.rodata.rows,"a"
  144              		.align	2
- 147              	test_chars:
- 148 0000 30313233 		.ascii	"012345"
- 148      3435
- 149              		.global	rows
- 150              		.section	.rodata.rows,"a"
- 151              		.align	2
- 154              	rows:
- 155 0000 00080140 		.word	1073809408
- 156 0004 0200     		.short	2
- 157 0006 0000     		.space	2
- 158 0008 00080140 		.word	1073809408
- 159 000c 0100     		.short	1
- 160 000e 0000     		.space	2
- 161 0010 00080140 		.word	1073809408
- 162 0014 0080     		.short	-32768
- 163 0016 0000     		.space	2
- 164 0018 00080140 		.word	1073809408
- 165 001c 0002     		.short	512
- 166 001e 0000     		.space	2
- 167 0020 00080140 		.word	1073809408
- 168 0024 0001     		.short	256
- 169 0026 0000     		.space	2
- 170              		.global	cols
- 171              		.section	.rodata.cols,"a"
- 172              		.align	2
-ARM GAS  /tmp/ccBEZaTq.s 			page 5
+ 147              	rows:
+ 148 0000 00080140 		.word	1073809408
+ 149 0004 0200     		.short	2
+ 150 0006 0000     		.space	2
+ 151 0008 00080140 		.word	1073809408
+ 152 000c 0100     		.short	1
+ 153 000e 0000     		.space	2
+ 154 0010 00080140 		.word	1073809408
+ 155 0014 0080     		.short	-32768
+ 156 0016 0000     		.space	2
+ 157 0018 00080140 		.word	1073809408
+ 158 001c 0002     		.short	512
+ 159 001e 0000     		.space	2
+ 160 0020 00080140 		.word	1073809408
+ 161 0024 0001     		.short	256
+ 162 0026 0000     		.space	2
+ 163              		.global	cols
+ 164              		.section	.rodata.cols,"a"
+ 165              		.align	2
+ 168              	cols:
+ 169 0000 000C0140 		.word	1073810432
+ 170 0004 0010     		.short	4096
+ 171 0006 0000     		.space	2
+ 172 0008 000C0140 		.word	1073810432
+ 173 000c 0020     		.short	8192
+ 174 000e 0000     		.space	2
+ARM GAS  /tmp/ccXxzDuz.s 			page 5
 
 
- 175              	cols:
- 176 0000 000C0140 		.word	1073810432
- 177 0004 0010     		.short	4096
- 178 0006 0000     		.space	2
- 179 0008 000C0140 		.word	1073810432
- 180 000c 0020     		.short	8192
- 181 000e 0000     		.space	2
- 182 0010 000C0140 		.word	1073810432
- 183 0014 0040     		.short	16384
- 184 0016 0000     		.space	2
- 185 0018 000C0140 		.word	1073810432
- 186 001c 0080     		.short	-32768
- 187 001e 0000     		.space	2
- 188 0020 000C0140 		.word	1073810432
- 189 0024 0800     		.short	8
- 190 0026 0000     		.space	2
- 191 0028 000C0140 		.word	1073810432
- 192 002c 1000     		.short	16
- 193 002e 0000     		.space	2
- 194              		.text
- 195              	.Letext0:
- 196              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
- 197              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
- 198              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
- 199              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
- 200              		.file 6 "Drivers/keyboard/rigth.h"
- 201              		.file 7 "Drivers/usb_send/usb_send.h"
-ARM GAS  /tmp/ccBEZaTq.s 			page 6
+ 175 0010 000C0140 		.word	1073810432
+ 176 0014 0040     		.short	16384
+ 177 0016 0000     		.space	2
+ 178 0018 000C0140 		.word	1073810432
+ 179 001c 0080     		.short	-32768
+ 180 001e 0000     		.space	2
+ 181 0020 000C0140 		.word	1073810432
+ 182 0024 0800     		.short	8
+ 183 0026 0000     		.space	2
+ 184 0028 000C0140 		.word	1073810432
+ 185 002c 1000     		.short	16
+ 186 002e 0000     		.space	2
+ 187              		.text
+ 188              	.Letext0:
+ 189              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 190              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 191              		.file 4 "Drivers/CMSIS/Device/ST/STM32F1xx/Include/stm32f103xb.h"
+ 192              		.file 5 "Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_gpio.h"
+ 193              		.file 6 "Drivers/keyboard/rigth.h"
+ 194              		.file 7 "Drivers/usb_send/usb_send.h"
+ARM GAS  /tmp/ccXxzDuz.s 			page 6
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 left.c
-     /tmp/ccBEZaTq.s:19     .text.right_check_keys:0000000000000000 $t
-     /tmp/ccBEZaTq.s:25     .text.right_check_keys:0000000000000000 right_check_keys
-     /tmp/ccBEZaTq.s:125    .text.right_check_keys:0000000000000058 $d
-     /tmp/ccBEZaTq.s:154    .rodata.rows:0000000000000000 rows
-     /tmp/ccBEZaTq.s:175    .rodata.cols:0000000000000000 cols
-     /tmp/ccBEZaTq.s:134    .rodata.nCols:0000000000000000 nCols
-     /tmp/ccBEZaTq.s:140    .rodata.nRows:0000000000000000 nRows
-     /tmp/ccBEZaTq.s:147    .data.test_chars:0000000000000000 test_chars
-     /tmp/ccBEZaTq.s:144    .data.test_chars:0000000000000000 $d
-     /tmp/ccBEZaTq.s:151    .rodata.rows:0000000000000000 $d
-     /tmp/ccBEZaTq.s:172    .rodata.cols:0000000000000000 $d
+     /tmp/ccXxzDuz.s:19     .text.right_check_keys:0000000000000000 $t
+     /tmp/ccXxzDuz.s:25     .text.right_check_keys:0000000000000000 right_check_keys
+     /tmp/ccXxzDuz.s:125    .text.right_check_keys:0000000000000058 $d
+     /tmp/ccXxzDuz.s:147    .rodata.rows:0000000000000000 rows
+     /tmp/ccXxzDuz.s:168    .rodata.cols:0000000000000000 cols
+     /tmp/ccXxzDuz.s:134    .rodata.nCols:0000000000000000 nCols
+     /tmp/ccXxzDuz.s:140    .rodata.nRows:0000000000000000 nRows
+     /tmp/ccXxzDuz.s:144    .rodata.rows:0000000000000000 $d
+     /tmp/ccXxzDuz.s:165    .rodata.cols:0000000000000000 $d
 
 UNDEFINED SYMBOLS
 HAL_GPIO_ReadPin

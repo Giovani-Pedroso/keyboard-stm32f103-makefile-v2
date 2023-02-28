@@ -26,7 +26,7 @@ typedef struct{
  * @parms 	-the struct to the keyboard command
  */
 void usb_sender_send_comand_test(keyboard_command_t command);
-void usb_sender_test(char keyboarSide, char column, char row);
+void usb_sender_test(char keyboarSide, uint8_t column, uint8_t row);
 void usb_send(char keyboarSide, uint8_t column, uint8_t row);
 void usb_send_task_init();
 void usb_send_task(void * vParams);
