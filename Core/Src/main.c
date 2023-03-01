@@ -55,7 +55,7 @@ typedef struct {
 /* extern QueueHandle_t usb_send_queue; */
 
 keyboardBuffer buffer = {0, 0, 0, 0, 0, 0, 0, 0};
-keyboard_command_t keyboar_commands;
+keyboard_command_t keyboard_commands_to_send;
 
 /* USER CODE END PFP */
 
@@ -97,8 +97,8 @@ int main(void) {
   osKernelInitialize();
   check_keys_task_init();
   usb_send_task_init();
-  /* defaultTaskHandle = osThreadNew(StartDefaultTask, NULL,
-   * &defaultTask_attributes); */
+  /* defaultTaskHandle = osThreadNew(StartDefaultTask, NULL, */
+  /* &defaultTask_attributes); */
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* xTaskCreate(&test_task, "Test_task", 100, NULL, 5, NULL); */

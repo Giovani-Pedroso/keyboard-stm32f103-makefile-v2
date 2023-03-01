@@ -19,12 +19,6 @@ typedef struct{
 	uint8_t keycode_6;
 } keyboard_command_t;
 
-/* QueueHandle_t usb_send_queue; */
-
-/*
- * @brief 	-For now I and sending the commands to the display ole
- * @parms 	-the struct to the keyboard command
- */
 void usb_sender_send_comand_test(keyboard_command_t command);
 void usb_sender_test(char keyboarSide, uint8_t column, uint8_t row);
 void usb_send(char keyboarSide, uint8_t column, uint8_t row);

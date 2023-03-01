@@ -7,9 +7,9 @@
 #include "usbd_hid.h"
 #include <stdint.h>
 
-/* extern QueueHandle_t usb_send_queue; */
 int isFunctionPressed = 0;
 extern USBD_HandleTypeDef hUsbDeviceFS;
+
 
 const uint8_t keyboard_keys_left[5][6] = {
     KL_C0_L0, KL_C1_L0, KL_C2_L0, KL_C3_L0, KL_C4_L0, KL_C5_L0, KL_C0_L1,
@@ -49,7 +49,6 @@ const uint8_t keyboard_keys_right_spc[5][6] = {
     KR_C2_L3_SPC, KR_C3_L3_SPC, KR_C4_L3_SPC, KR_C5_L3_SPC, KR_C0_L4_SPC,
     KR_C1_L4_SPC, KR_C2_L4_SPC, KR_C3_L4_SPC, KR_C4_L4_SPC, KR_C5_L4_SPC};
 
-char test_keys[7] = {'0', '1', '2', '3', '4', '5', '6'};
 /**
  * @breif - will write in the oled display the oring of the press
  * @parms - keyboard - the side of the keyboard
@@ -74,10 +73,13 @@ void usb_sender_test(char keyboardSide, uint8_t column, uint8_t row) {
   ssd1306_UpdateScreen();
 }
 
+/**
+	 @brief will send the variable keyboar_commands 
+ */
 // This will that a command then saves it into a buffer
 void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
   /* usb_sender_test(keyboarSide, test_keys[column], test_keys[row]); */
-  extern keyboard_command_t keyboar_commands;
+  extern keyboard_command_t keyboard_commands_to_send;
   uint8_t key = 0;
   // usb_sender_test(keyboarSide, column, row);
   if (keyboarSide == 'l') {
@@ -89,7 +91,7 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
     if (key >= 232 && key != 240) {
       // Do the bitwise operation to set the modifier key for more info see:
       //  pag -
-      keyboar_commands.modifier_key |= 1 << (key - 232);
+      keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
       return;
     } else if (key == 240) {
       isFunctionPressed = 1;
@@ -102,7 +104,7 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
       key = keyboard_keys_right_spc[column][row];
 
     if (key >= 232 && key != 240) {
-      keyboar_commands.modifier_key |= 1 << (key - 232);
+      keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
       return;
     } else if (key == 240) {
       isFunctionPressed = 1;
@@ -111,27 +113,27 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
   }
 
   // Checks if the key pressed is in the strunct
-  if (key == keyboar_commands.keycode_1 || key == keyboar_commands.keycode_2 ||
-      key == keyboar_commands.keycode_3 || key == keyboar_commands.keycode_4 ||
-      key == keyboar_commands.keycode_5) {
+  if (key == keyboard_commands_to_send.keycode_1 || key == keyboard_commands_to_send.keycode_2 ||
+      key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
+      key == keyboard_commands_to_send.keycode_5) {
     return;
   }
 
   // Add the key to the struct if there is a space avalible
-  if (!keyboar_commands.keycode_1) {
-    keyboar_commands.keycode_1 = key;
+  if (!keyboard_commands_to_send.keycode_1) {
+    keyboard_commands_to_send.keycode_1 = key;
     return;
-  } else if (!keyboar_commands.keycode_2 && key != keyboar_commands.keycode_2) {
-    keyboar_commands.keycode_2 = key;
+  } else if (!keyboard_commands_to_send.keycode_2 && key != keyboard_commands_to_send.keycode_2) {
+    keyboard_commands_to_send.keycode_2 = key;
     return;
-  } else if (!keyboar_commands.keycode_3) {
-    keyboar_commands.keycode_3 = key;
+  } else if (!keyboard_commands_to_send.keycode_3) {
+    keyboard_commands_to_send.keycode_3 = key;
     return;
-  } else if (!keyboar_commands.keycode_4) {
-    keyboar_commands.keycode_4 = key;
+  } else if (!keyboard_commands_to_send.keycode_4) {
+    keyboard_commands_to_send.keycode_4 = key;
     return;
-  } else if (!keyboar_commands.keycode_5) {
-    keyboar_commands.keycode_5 = key;
+  } else if (!keyboard_commands_to_send.keycode_5) {
+    keyboard_commands_to_send.keycode_5 = key;
     return;
   }
   /* vTaskDelay(10 / portTICK_PERIOD_MS); */
@@ -139,7 +141,7 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
 
 void usb_send_task(void *vParams) {
 
-  extern keyboard_command_t keyboar_commands;
+  extern keyboard_command_t keyboard_commands_to_send;
   static keyboard_command_t previous_comand;
   uint8_t repeatKey = 0;
   uint8_t prevKey = 0;
@@ -148,15 +150,15 @@ void usb_send_task(void *vParams) {
   while (1) {
     jump = 0;
     // Send the command if a key was pressed
-    if (keyboar_commands.keycode_1 || keyboar_commands.modifier_key) {
+    if (keyboard_commands_to_send.keycode_1 || keyboard_commands_to_send.modifier_key) {
 
       /*
-if (repeatKey == 0 && prevKey == keyboar_commands.keycode_1) {
+if (repeatKey == 0 && prevKey == keyboard_commands_to_send.keycode_1) {
 for (uint8_t i = 0; i < 200; i++) {
-if (!keyboar_commands.keycode_1) {
+if (!keyboard_commands_to_send.keycode_1) {
 jump = 1;
 }
-if (prevKey != keyboar_commands.keycode_1)
+if (prevKey != keyboard_commands_to_send.keycode_1)
 break;
 vTaskDelay(5 / portTICK_PERIOD_MS);
 }
@@ -166,21 +168,21 @@ repeatKey = 1;
 if (jump)
 continue;
       */
-      prevKey = keyboar_commands.keycode_1;
-      USBD_HID_SendReport(&hUsbDeviceFS, &keyboar_commands,
+      prevKey = keyboard_commands_to_send.keycode_1;
+      USBD_HID_SendReport(&hUsbDeviceFS, &keyboard_commands_to_send,
                           sizeof(keyboard_command_t));
 
       vTaskDelay(30 / portTICK_PERIOD_MS);
       // Reset the keyboard commands
-      keyboar_commands.keycode_1 = 0;
-      keyboar_commands.keycode_2 = 0;
-      keyboar_commands.keycode_3 = 0;
-      keyboar_commands.keycode_4 = 0;
-      keyboar_commands.keycode_5 = 0;
-      keyboar_commands.modifier_key = 0;
+      keyboard_commands_to_send.keycode_1 = 0;
+      keyboard_commands_to_send.keycode_2 = 0;
+      keyboard_commands_to_send.keycode_3 = 0;
+      keyboard_commands_to_send.keycode_4 = 0;
+      keyboard_commands_to_send.keycode_5 = 0;
+      keyboard_commands_to_send.modifier_key = 0;
       isFunctionPressed = 0;
 
-      USBD_HID_SendReport(&hUsbDeviceFS, &keyboar_commands,
+      USBD_HID_SendReport(&hUsbDeviceFS, &keyboard_commands_to_send,
                           sizeof(keyboard_command_t));
       vTaskDelay(10 / portTICK_PERIOD_MS);
       /* vTaskDelay(200 / portTICK_PERIOD_MS); */
