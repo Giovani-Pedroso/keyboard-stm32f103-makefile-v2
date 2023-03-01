@@ -10,36 +10,27 @@
 int isFunctionPressed = 0;
 extern USBD_HandleTypeDef hUsbDeviceFS;
 
-
 const uint8_t keyboard_keys_left[5][6] = {
-    KL_C0_L0, KL_C1_L0, KL_C2_L0, KL_C3_L0, KL_C4_L0, KL_C5_L0, KL_C0_L1,
-    KL_C1_L1, KL_C2_L1, KL_C3_L1, KL_C4_L1, KL_C5_L1, KL_C0_L2, KL_C1_L2,
-    KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2, KL_C0_L3, KL_C1_L3, KL_C2_L3,
-    KL_C3_L3, KL_C4_L3, KL_C5_L3, KL_C0_L4, KL_C1_L4, KL_C2_L4, KL_C3_L4,
-    KL_C4_L4, KL_C5_L4
-    /* KL_C0_L2, KL_C1_L2, KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2, */
-};
+    KL_C0_L0, KL_C1_L0, KL_C2_L0, KL_C3_L0, KL_C4_L0, KL_C5_L0,
+    KL_C0_L1, KL_C1_L1, KL_C2_L1, KL_C3_L1, KL_C4_L1, KL_C5_L1,
+    KL_C0_L2, KL_C1_L2, KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2,
+    KL_C0_L3, KL_C1_L3, KL_C2_L3, KL_C3_L3, KL_C4_L3, KL_C5_L3,
+    KL_C0_L4, KL_C1_L4, KL_C2_L4, KL_C3_L4, KL_C4_L4, KL_C5_L4};
 
 const uint8_t keyboard_keys_right[5][6] = {
-    KR_C0_L0, KR_C1_L0, KR_C2_L0, KR_C3_L0, KR_C4_L0, KR_C5_L0, KR_C0_L1,
-    KR_C1_L1, KR_C2_L1, KR_C3_L1, KR_C4_L1, KR_C5_L1, KR_C0_L2, KR_C1_L2,
-    KR_C2_L2, KR_C3_L2, KR_C4_L2, KR_C5_L2, KR_C0_L3, KR_C1_L3, KR_C2_L3,
-    KR_C3_L3, KR_C4_L3, KR_C5_L3, KR_C0_L4, KR_C1_L4, KR_C2_L4, KR_C3_L4,
-    KR_C4_L4, KR_C5_L4
-    /* KL_C0_L2, KL_C1_L2, KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2, */
-};
+    KR_C0_L0, KR_C1_L0, KR_C2_L0, KR_C3_L0, KR_C4_L0, KR_C5_L0,
+    KR_C0_L1, KR_C1_L1, KR_C2_L1, KR_C3_L1, KR_C4_L1, KR_C5_L1,
+    KR_C0_L2, KR_C1_L2, KR_C2_L2, KR_C3_L2, KR_C4_L2, KR_C5_L2,
+    KR_C0_L3, KR_C1_L3, KR_C2_L3, KR_C3_L3, KR_C4_L3, KR_C5_L3,
+    KR_C0_L4, KR_C1_L4, KR_C2_L4, KR_C3_L4, KR_C4_L4, KR_C5_L4};
 
 const uint8_t keyboard_keys_left_spc[5][6] = {
-    KL_C0_L0_SPC, KL_C1_L0_SPC, KL_C2_L0_SPC, KL_C3_L0_SPC,
-    KL_C4_L0_SPC, KL_C5_L0_SPC, KL_C0_L1_SPC, KL_C1_L1_SPC,
-    KL_C2_L1_SPC, KL_C3_L1_SPC, KL_C4_L1_SPC, KL_C5_L1_SPC,
-    KL_C0_L2_SPC, KL_C1_L2_SPC, KL_C2_L2_SPC, KL_C3_L2_SPC,
-    KL_C4_L2_SPC, KL_C5_L2_SPC, KL_C0_L3_SPC, KL_C1_L3_SPC,
-    KL_C2_L3_SPC, KL_C3_L3_SPC, KL_C4_L3_SPC, KL_C5_L3_SPC,
-    KL_C0_L4_SPC, KL_C1_L4_SPC, KL_C2_L4_SPC, KL_C3_L4_SPC,
-    KL_C4_L4_SPC, KL_C5_L4_SPC
-    /* KL_C0_L2, KL_C1_L2, KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2, */
-};
+    KL_C0_L0_SPC, KL_C1_L0_SPC, KL_C2_L0_SPC, KL_C3_L0_SPC, KL_C4_L0_SPC,
+    KL_C5_L0_SPC, KL_C0_L1_SPC, KL_C1_L1_SPC, KL_C2_L1_SPC, KL_C3_L1_SPC,
+    KL_C4_L1_SPC, KL_C5_L1_SPC, KL_C0_L2_SPC, KL_C1_L2_SPC, KL_C2_L2_SPC,
+    KL_C3_L2_SPC, KL_C4_L2_SPC, KL_C5_L2_SPC, KL_C0_L3_SPC, KL_C1_L3_SPC,
+    KL_C2_L3_SPC, KL_C3_L3_SPC, KL_C4_L3_SPC, KL_C5_L3_SPC, KL_C0_L4_SPC,
+    KL_C1_L4_SPC, KL_C2_L4_SPC, KL_C3_L4_SPC, KL_C4_L4_SPC, KL_C5_L4_SPC};
 
 const uint8_t keyboard_keys_right_spc[5][6] = {
     KR_C0_L0_SPC, KR_C1_L0_SPC, KR_C2_L0_SPC, KR_C3_L0_SPC, KR_C4_L0_SPC,
@@ -74,30 +65,51 @@ void usb_sender_test(char keyboardSide, uint8_t column, uint8_t row) {
 }
 
 /**
-	 @brief will send the variable keyboar_commands 
+  @brief This function will write the usb command code into
+         a buffer that will be send to the usb latter
+         @param - keyboardside - the side of the keyboard(l - left; r right)
+         @param - column - the column of the key
+         @param - row - the row of the key
  */
-// This will that a command then saves it into a buffer
 void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
-  /* usb_sender_test(keyboarSide, test_keys[column], test_keys[row]); */
+
+  // buffer that will store the command to be send
   extern keyboard_command_t keyboard_commands_to_send;
+
+  // variable that will store the code
   uint8_t key = 0;
-  // usb_sender_test(keyboarSide, column, row);
+
+  // wil checks if the button came from the left side
   if (keyboarSide == 'l') {
+
+    // checks if the button for the special layler was pressed
     if (isFunctionPressed == 0)
+      // will pick the code of a key saved a tabel latter this
+      // value will be stored in the buffer
       key = keyboard_keys_left[column][row];
     else
       key = keyboard_keys_left_spc[column][row];
 
+    // checks if the key is a special key (shift, controll,
+    // GUI aka windowns key, alt)
     if (key >= 232 && key != 240) {
       // Do the bitwise operation to set the modifier key for more info see:
-      //  pag -
+      // pag -
+      // of the document:
       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
       return;
-    } else if (key == 240) {
+    }
+    // if the key pressed was the special layler key
+    // will save the state into a variabe to be use latter
+    else if (key == 240) {
       isFunctionPressed = 1;
       key = 0;
     }
-  } else if (keyboarSide == 'r') {
+  }
+
+  // The same thing that above but this time with the right
+  // side of the keyboard
+  else if (keyboarSide == 'r') {
     if (isFunctionPressed == 0)
       key = keyboard_keys_right[column][row];
     else
@@ -112,18 +124,21 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
     }
   }
 
-  // Checks if the key pressed is in the strunct
-  if (key == keyboard_commands_to_send.keycode_1 || key == keyboard_commands_to_send.keycode_2 ||
-      key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
+  // Checks if the key pressed is in the buffer
+  if (key == keyboard_commands_to_send.keycode_1 ||
+      key == keyboard_commands_to_send.keycode_2 ||
+      key == keyboard_commands_to_send.keycode_3 ||
+      key == keyboard_commands_to_send.keycode_4 ||
       key == keyboard_commands_to_send.keycode_5) {
     return;
   }
 
-  // Add the key to the struct if there is a space avalible
+  // Add the key to the buffer if there is a space avalible
   if (!keyboard_commands_to_send.keycode_1) {
     keyboard_commands_to_send.keycode_1 = key;
     return;
-  } else if (!keyboard_commands_to_send.keycode_2 && key != keyboard_commands_to_send.keycode_2) {
+  } else if (!keyboard_commands_to_send.keycode_2 &&
+             key != keyboard_commands_to_send.keycode_2) {
     keyboard_commands_to_send.keycode_2 = key;
     return;
   } else if (!keyboard_commands_to_send.keycode_3) {
@@ -139,6 +154,10 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
   /* vTaskDelay(10 / portTICK_PERIOD_MS); */
 }
 
+/**
+         @brief - will checks periodically the keyboard_commands_to_send
+                                 buffer to send the command to the usb
+ */
 void usb_send_task(void *vParams) {
 
   extern keyboard_command_t keyboard_commands_to_send;
@@ -150,7 +169,8 @@ void usb_send_task(void *vParams) {
   while (1) {
     jump = 0;
     // Send the command if a key was pressed
-    if (keyboard_commands_to_send.keycode_1 || keyboard_commands_to_send.modifier_key) {
+    if (keyboard_commands_to_send.keycode_1 ||
+        keyboard_commands_to_send.modifier_key) {
 
       /*
 if (repeatKey == 0 && prevKey == keyboard_commands_to_send.keycode_1) {
