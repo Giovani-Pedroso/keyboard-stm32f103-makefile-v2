@@ -1,4 +1,4 @@
-ARM GAS  /tmp/cco3LQAv.s 			page 1
+ARM GAS  /tmp/ccBVnRhY.s 			page 1
 
 
    1              		.cpu cortex-m3
@@ -18,14 +18,31 @@ ARM GAS  /tmp/cco3LQAv.s 			page 1
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
   17              		.file 1 "Drivers/usb_send/usb_send.c"
-  18              		.section	.text.usb_send_task,"ax",%progbits
-  19              		.align	1
-  20              		.global	usb_send_task
-  21              		.syntax unified
-  22              		.thumb
-  23              		.thumb_func
-  25              	usb_send_task:
-  26              	.LFB74:
+  18              		.section	.rodata.usb_sender_test.str1.4,"aMS",%progbits,1
+  19              		.align	2
+  20              	.LC1:
+  21 0000 4B2D00   		.ascii	"K-\000"
+  22 0003 00       		.align	2
+  23              	.LC2:
+  24 0004 20526F77 		.ascii	" Row-\000"
+  24      2D00
+  25 000a 0000     		.align	2
+  26              	.LC3:
+  27 000c 20436F6C 		.ascii	" Col-\000"
+  27      2D00
+  28 0012 0000     		.align	2
+  29              	.LC0:
+  30 0014 30313233 		.ascii	"012345\000"
+  30      343500
+  31              		.section	.text.usb_sender_test,"ax",%progbits
+  32              		.align	1
+  33              		.global	usb_sender_test
+  34              		.syntax unified
+  35              		.thumb
+  36              		.thumb_func
+  38              	usb_sender_test:
+  39              	.LVL0:
+  40              	.LFB72:
    1:Drivers/usb_send/usb_send.c **** #include "usb_send.h"
    2:Drivers/usb_send/usb_send.c **** #include "FreeRTOS.h"
    3:Drivers/usb_send/usb_send.c **** #include "keys_config.h"
@@ -38,1072 +55,1028 @@ ARM GAS  /tmp/cco3LQAv.s 			page 1
   10:Drivers/usb_send/usb_send.c **** int isFunctionPressed = 0;
   11:Drivers/usb_send/usb_send.c **** extern USBD_HandleTypeDef hUsbDeviceFS;
   12:Drivers/usb_send/usb_send.c **** 
-  13:Drivers/usb_send/usb_send.c **** 
-  14:Drivers/usb_send/usb_send.c **** const uint8_t keyboard_keys_left[5][6] = {
-  15:Drivers/usb_send/usb_send.c ****     KL_C0_L0, KL_C1_L0, KL_C2_L0, KL_C3_L0, KL_C4_L0, KL_C5_L0, KL_C0_L1,
-  16:Drivers/usb_send/usb_send.c ****     KL_C1_L1, KL_C2_L1, KL_C3_L1, KL_C4_L1, KL_C5_L1, KL_C0_L2, KL_C1_L2,
-  17:Drivers/usb_send/usb_send.c ****     KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2, KL_C0_L3, KL_C1_L3, KL_C2_L3,
-  18:Drivers/usb_send/usb_send.c ****     KL_C3_L3, KL_C4_L3, KL_C5_L3, KL_C0_L4, KL_C1_L4, KL_C2_L4, KL_C3_L4,
-  19:Drivers/usb_send/usb_send.c ****     KL_C4_L4, KL_C5_L4
-  20:Drivers/usb_send/usb_send.c ****     /* KL_C0_L2, KL_C1_L2, KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2, */
-  21:Drivers/usb_send/usb_send.c **** };
-  22:Drivers/usb_send/usb_send.c **** 
-  23:Drivers/usb_send/usb_send.c **** const uint8_t keyboard_keys_right[5][6] = {
-  24:Drivers/usb_send/usb_send.c ****     KR_C0_L0, KR_C1_L0, KR_C2_L0, KR_C3_L0, KR_C4_L0, KR_C5_L0, KR_C0_L1,
-  25:Drivers/usb_send/usb_send.c ****     KR_C1_L1, KR_C2_L1, KR_C3_L1, KR_C4_L1, KR_C5_L1, KR_C0_L2, KR_C1_L2,
-  26:Drivers/usb_send/usb_send.c ****     KR_C2_L2, KR_C3_L2, KR_C4_L2, KR_C5_L2, KR_C0_L3, KR_C1_L3, KR_C2_L3,
-  27:Drivers/usb_send/usb_send.c ****     KR_C3_L3, KR_C4_L3, KR_C5_L3, KR_C0_L4, KR_C1_L4, KR_C2_L4, KR_C3_L4,
-  28:Drivers/usb_send/usb_send.c ****     KR_C4_L4, KR_C5_L4
-  29:Drivers/usb_send/usb_send.c ****     /* KL_C0_L2, KL_C1_L2, KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2, */
-  30:Drivers/usb_send/usb_send.c **** };
-  31:Drivers/usb_send/usb_send.c **** 
-  32:Drivers/usb_send/usb_send.c **** const uint8_t keyboard_keys_left_spc[5][6] = {
-ARM GAS  /tmp/cco3LQAv.s 			page 2
+  13:Drivers/usb_send/usb_send.c **** const uint8_t keyboard_keys_left[5][6] = {
+  14:Drivers/usb_send/usb_send.c ****     KL_C0_L0, KL_C1_L0, KL_C2_L0, KL_C3_L0, KL_C4_L0, KL_C5_L0,
+  15:Drivers/usb_send/usb_send.c ****     KL_C0_L1, KL_C1_L1, KL_C2_L1, KL_C3_L1, KL_C4_L1, KL_C5_L1,
+ARM GAS  /tmp/ccBVnRhY.s 			page 2
 
 
-  33:Drivers/usb_send/usb_send.c ****     KL_C0_L0_SPC, KL_C1_L0_SPC, KL_C2_L0_SPC, KL_C3_L0_SPC,
-  34:Drivers/usb_send/usb_send.c ****     KL_C4_L0_SPC, KL_C5_L0_SPC, KL_C0_L1_SPC, KL_C1_L1_SPC,
-  35:Drivers/usb_send/usb_send.c ****     KL_C2_L1_SPC, KL_C3_L1_SPC, KL_C4_L1_SPC, KL_C5_L1_SPC,
-  36:Drivers/usb_send/usb_send.c ****     KL_C0_L2_SPC, KL_C1_L2_SPC, KL_C2_L2_SPC, KL_C3_L2_SPC,
-  37:Drivers/usb_send/usb_send.c ****     KL_C4_L2_SPC, KL_C5_L2_SPC, KL_C0_L3_SPC, KL_C1_L3_SPC,
-  38:Drivers/usb_send/usb_send.c ****     KL_C2_L3_SPC, KL_C3_L3_SPC, KL_C4_L3_SPC, KL_C5_L3_SPC,
-  39:Drivers/usb_send/usb_send.c ****     KL_C0_L4_SPC, KL_C1_L4_SPC, KL_C2_L4_SPC, KL_C3_L4_SPC,
-  40:Drivers/usb_send/usb_send.c ****     KL_C4_L4_SPC, KL_C5_L4_SPC
-  41:Drivers/usb_send/usb_send.c ****     /* KL_C0_L2, KL_C1_L2, KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2, */
-  42:Drivers/usb_send/usb_send.c **** };
-  43:Drivers/usb_send/usb_send.c **** 
-  44:Drivers/usb_send/usb_send.c **** const uint8_t keyboard_keys_right_spc[5][6] = {
-  45:Drivers/usb_send/usb_send.c ****     KR_C0_L0_SPC, KR_C1_L0_SPC, KR_C2_L0_SPC, KR_C3_L0_SPC, KR_C4_L0_SPC,
-  46:Drivers/usb_send/usb_send.c ****     KR_C5_L0_SPC, KR_C0_L1_SPC, KR_C1_L1_SPC, KR_C2_L1_SPC, KR_C3_L1_SPC,
-  47:Drivers/usb_send/usb_send.c ****     KR_C4_L1_SPC, KR_C5_L1_SPC, KR_C0_L2_SPC, KR_C1_L2_SPC, KR_C2_L2_SPC,
-  48:Drivers/usb_send/usb_send.c ****     KR_C3_L2_SPC, KR_C4_L2_SPC, KR_C5_L2_SPC, KR_C0_L3_SPC, KR_C1_L3_SPC,
-  49:Drivers/usb_send/usb_send.c ****     KR_C2_L3_SPC, KR_C3_L3_SPC, KR_C4_L3_SPC, KR_C5_L3_SPC, KR_C0_L4_SPC,
-  50:Drivers/usb_send/usb_send.c ****     KR_C1_L4_SPC, KR_C2_L4_SPC, KR_C3_L4_SPC, KR_C4_L4_SPC, KR_C5_L4_SPC};
+  16:Drivers/usb_send/usb_send.c ****     KL_C0_L2, KL_C1_L2, KL_C2_L2, KL_C3_L2, KL_C4_L2, KL_C5_L2,
+  17:Drivers/usb_send/usb_send.c ****     KL_C0_L3, KL_C1_L3, KL_C2_L3, KL_C3_L3, KL_C4_L3, KL_C5_L3,
+  18:Drivers/usb_send/usb_send.c ****     KL_C0_L4, KL_C1_L4, KL_C2_L4, KL_C3_L4, KL_C4_L4, KL_C5_L4};
+  19:Drivers/usb_send/usb_send.c **** 
+  20:Drivers/usb_send/usb_send.c **** const uint8_t keyboard_keys_right[5][6] = {
+  21:Drivers/usb_send/usb_send.c ****     KR_C0_L0, KR_C1_L0, KR_C2_L0, KR_C3_L0, KR_C4_L0, KR_C5_L0,
+  22:Drivers/usb_send/usb_send.c ****     KR_C0_L1, KR_C1_L1, KR_C2_L1, KR_C3_L1, KR_C4_L1, KR_C5_L1,
+  23:Drivers/usb_send/usb_send.c ****     KR_C0_L2, KR_C1_L2, KR_C2_L2, KR_C3_L2, KR_C4_L2, KR_C5_L2,
+  24:Drivers/usb_send/usb_send.c ****     KR_C0_L3, KR_C1_L3, KR_C2_L3, KR_C3_L3, KR_C4_L3, KR_C5_L3,
+  25:Drivers/usb_send/usb_send.c ****     KR_C0_L4, KR_C1_L4, KR_C2_L4, KR_C3_L4, KR_C4_L4, KR_C5_L4};
+  26:Drivers/usb_send/usb_send.c **** 
+  27:Drivers/usb_send/usb_send.c **** const uint8_t keyboard_keys_left_spc[5][6] = {
+  28:Drivers/usb_send/usb_send.c ****     KL_C0_L0_SPC, KL_C1_L0_SPC, KL_C2_L0_SPC, KL_C3_L0_SPC, KL_C4_L0_SPC,
+  29:Drivers/usb_send/usb_send.c ****     KL_C5_L0_SPC, KL_C0_L1_SPC, KL_C1_L1_SPC, KL_C2_L1_SPC, KL_C3_L1_SPC,
+  30:Drivers/usb_send/usb_send.c ****     KL_C4_L1_SPC, KL_C5_L1_SPC, KL_C0_L2_SPC, KL_C1_L2_SPC, KL_C2_L2_SPC,
+  31:Drivers/usb_send/usb_send.c ****     KL_C3_L2_SPC, KL_C4_L2_SPC, KL_C5_L2_SPC, KL_C0_L3_SPC, KL_C1_L3_SPC,
+  32:Drivers/usb_send/usb_send.c ****     KL_C2_L3_SPC, KL_C3_L3_SPC, KL_C4_L3_SPC, KL_C5_L3_SPC, KL_C0_L4_SPC,
+  33:Drivers/usb_send/usb_send.c ****     KL_C1_L4_SPC, KL_C2_L4_SPC, KL_C3_L4_SPC, KL_C4_L4_SPC, KL_C5_L4_SPC};
+  34:Drivers/usb_send/usb_send.c **** 
+  35:Drivers/usb_send/usb_send.c **** const uint8_t keyboard_keys_right_spc[5][6] = {
+  36:Drivers/usb_send/usb_send.c ****     KR_C0_L0_SPC, KR_C1_L0_SPC, KR_C2_L0_SPC, KR_C3_L0_SPC, KR_C4_L0_SPC,
+  37:Drivers/usb_send/usb_send.c ****     KR_C5_L0_SPC, KR_C0_L1_SPC, KR_C1_L1_SPC, KR_C2_L1_SPC, KR_C3_L1_SPC,
+  38:Drivers/usb_send/usb_send.c ****     KR_C4_L1_SPC, KR_C5_L1_SPC, KR_C0_L2_SPC, KR_C1_L2_SPC, KR_C2_L2_SPC,
+  39:Drivers/usb_send/usb_send.c ****     KR_C3_L2_SPC, KR_C4_L2_SPC, KR_C5_L2_SPC, KR_C0_L3_SPC, KR_C1_L3_SPC,
+  40:Drivers/usb_send/usb_send.c ****     KR_C2_L3_SPC, KR_C3_L3_SPC, KR_C4_L3_SPC, KR_C5_L3_SPC, KR_C0_L4_SPC,
+  41:Drivers/usb_send/usb_send.c ****     KR_C1_L4_SPC, KR_C2_L4_SPC, KR_C3_L4_SPC, KR_C4_L4_SPC, KR_C5_L4_SPC};
+  42:Drivers/usb_send/usb_send.c **** 
+  43:Drivers/usb_send/usb_send.c **** /**
+  44:Drivers/usb_send/usb_send.c ****  * @breif - will write in the oled display the oring of the press
+  45:Drivers/usb_send/usb_send.c ****  * @parms - keyboard - the side of the keyboard
+  46:Drivers/usb_send/usb_send.c ****  * @parms - column - the column of the button
+  47:Drivers/usb_send/usb_send.c ****  * @parms - row - the row of the button
+  48:Drivers/usb_send/usb_send.c ****  * */
+  49:Drivers/usb_send/usb_send.c **** void usb_sender_test(char keyboardSide, uint8_t column, uint8_t row) {
+  41              		.loc 1 49 70 view -0
+  42              		.cfi_startproc
+  43              		@ args = 0, pretend = 0, frame = 8
+  44              		@ frame_needed = 0, uses_anonymous_args = 0
+  45              		.loc 1 49 70 is_stmt 0 view .LVU1
+  46 0000 F0B5     		push	{r4, r5, r6, r7, lr}
+  47              	.LCFI0:
+  48              		.cfi_def_cfa_offset 20
+  49              		.cfi_offset 4, -20
+  50              		.cfi_offset 5, -16
+  51              		.cfi_offset 6, -12
+  52              		.cfi_offset 7, -8
+  53              		.cfi_offset 14, -4
+  54 0002 83B0     		sub	sp, sp, #12
+  55              	.LCFI1:
+  56              		.cfi_def_cfa_offset 32
+  57 0004 0746     		mov	r7, r0
+  58 0006 0D46     		mov	r5, r1
+  59 0008 1646     		mov	r6, r2
+  50:Drivers/usb_send/usb_send.c ****   const char test_chars[6] = {'0', '1', '2', '3', '4', '5'};
+  60              		.loc 1 50 3 is_stmt 1 view .LVU2
+  61              		.loc 1 50 14 is_stmt 0 view .LVU3
+  62 000a 244B     		ldr	r3, .L3
+ARM GAS  /tmp/ccBVnRhY.s 			page 3
+
+
+  63 000c 93E80300 		ldm	r3, {r0, r1}
+  64              	.LVL1:
+  65              		.loc 1 50 14 view .LVU4
+  66 0010 0090     		str	r0, [sp]
+  67 0012 ADF80410 		strh	r1, [sp, #4]	@ movhi
   51:Drivers/usb_send/usb_send.c **** 
-  52:Drivers/usb_send/usb_send.c **** /**
-  53:Drivers/usb_send/usb_send.c ****  * @breif - will write in the oled display the oring of the press
-  54:Drivers/usb_send/usb_send.c ****  * @parms - keyboard - the side of the keyboard
-  55:Drivers/usb_send/usb_send.c ****  * @parms - column - the column of the button
-  56:Drivers/usb_send/usb_send.c ****  * @parms - row - the row of the button
-  57:Drivers/usb_send/usb_send.c ****  * */
-  58:Drivers/usb_send/usb_send.c **** void usb_sender_test(char keyboardSide, uint8_t column, uint8_t row) {
-  59:Drivers/usb_send/usb_send.c ****   const char test_chars[6] = {'0', '1', '2', '3', '4', '5'};
-  60:Drivers/usb_send/usb_send.c **** 
-  61:Drivers/usb_send/usb_send.c ****   ssd1306_Fill(Black);
-  62:Drivers/usb_send/usb_send.c ****   ssd1306_SetCursor(0, 0);
-  63:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString("K-", Font_7x10, White);
-  64:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(keyboardSide, Font_7x10, White);
-  65:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString(" Row-", Font_7x10, White);
-  66:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(test_chars[row], Font_7x10, White);
-  67:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString(" Col-", Font_7x10, White);
-  68:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(test_chars[column], Font_7x10, White);
-  69:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
-  70:Drivers/usb_send/usb_send.c **** 
-  71:Drivers/usb_send/usb_send.c ****   vTaskDelay(400 / portTICK_PERIOD_MS);
-  72:Drivers/usb_send/usb_send.c ****   ssd1306_Fill(Black);
-  73:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
-  74:Drivers/usb_send/usb_send.c **** }
+  52:Drivers/usb_send/usb_send.c ****   ssd1306_Fill(Black);
+  68              		.loc 1 52 3 is_stmt 1 view .LVU5
+  69 0016 0020     		movs	r0, #0
+  70 0018 FFF7FEFF 		bl	ssd1306_Fill
+  71              	.LVL2:
+  53:Drivers/usb_send/usb_send.c ****   ssd1306_SetCursor(0, 0);
+  72              		.loc 1 53 3 view .LVU6
+  73 001c 0021     		movs	r1, #0
+  74 001e 0846     		mov	r0, r1
+  75 0020 FFF7FEFF 		bl	ssd1306_SetCursor
+  76              	.LVL3:
+  54:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString("K-", Font_7x10, White);
+  77              		.loc 1 54 3 view .LVU7
+  78 0024 1E4C     		ldr	r4, .L3+4
+  79 0026 0123     		movs	r3, #1
+  80 0028 94E80600 		ldm	r4, {r1, r2}
+  81 002c 1D48     		ldr	r0, .L3+8
+  82 002e FFF7FEFF 		bl	ssd1306_WriteString
+  83              	.LVL4:
+  55:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(keyboardSide, Font_7x10, White);
+  84              		.loc 1 55 3 view .LVU8
+  85 0032 0123     		movs	r3, #1
+  86 0034 94E80600 		ldm	r4, {r1, r2}
+  87 0038 3846     		mov	r0, r7
+  88 003a FFF7FEFF 		bl	ssd1306_WriteChar
+  89              	.LVL5:
+  56:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString(" Row-", Font_7x10, White);
+  90              		.loc 1 56 3 view .LVU9
+  91 003e 0123     		movs	r3, #1
+  92 0040 94E80600 		ldm	r4, {r1, r2}
+  93 0044 1848     		ldr	r0, .L3+12
+  94 0046 FFF7FEFF 		bl	ssd1306_WriteString
+  95              	.LVL6:
+  57:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(test_chars[row], Font_7x10, White);
+  96              		.loc 1 57 3 view .LVU10
+  97              		.loc 1 57 31 is_stmt 0 view .LVU11
+  98 004a 06F10803 		add	r3, r6, #8
+  99 004e 0DEB0306 		add	r6, sp, r3
+ 100              		.loc 1 57 3 view .LVU12
+ 101 0052 0123     		movs	r3, #1
+ 102 0054 94E80600 		ldm	r4, {r1, r2}
+ 103 0058 16F8080C 		ldrb	r0, [r6, #-8]	@ zero_extendqisi2
+ 104 005c FFF7FEFF 		bl	ssd1306_WriteChar
+ 105              	.LVL7:
+  58:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString(" Col-", Font_7x10, White);
+ 106              		.loc 1 58 3 is_stmt 1 view .LVU13
+ 107 0060 0123     		movs	r3, #1
+ 108 0062 94E80600 		ldm	r4, {r1, r2}
+ 109 0066 1148     		ldr	r0, .L3+16
+ 110 0068 FFF7FEFF 		bl	ssd1306_WriteString
+ 111              	.LVL8:
+ARM GAS  /tmp/ccBVnRhY.s 			page 4
+
+
+  59:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(test_chars[column], Font_7x10, White);
+ 112              		.loc 1 59 3 view .LVU14
+ 113              		.loc 1 59 31 is_stmt 0 view .LVU15
+ 114 006c 05F10803 		add	r3, r5, #8
+ 115 0070 0DEB0305 		add	r5, sp, r3
+ 116              		.loc 1 59 3 view .LVU16
+ 117 0074 0123     		movs	r3, #1
+ 118 0076 94E80600 		ldm	r4, {r1, r2}
+ 119 007a 15F8080C 		ldrb	r0, [r5, #-8]	@ zero_extendqisi2
+ 120 007e FFF7FEFF 		bl	ssd1306_WriteChar
+ 121              	.LVL9:
+  60:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
+ 122              		.loc 1 60 3 is_stmt 1 view .LVU17
+ 123 0082 FFF7FEFF 		bl	ssd1306_UpdateScreen
+ 124              	.LVL10:
+  61:Drivers/usb_send/usb_send.c **** 
+  62:Drivers/usb_send/usb_send.c ****   vTaskDelay(400 / portTICK_PERIOD_MS);
+ 125              		.loc 1 62 3 view .LVU18
+ 126 0086 4FF4C870 		mov	r0, #400
+ 127 008a FFF7FEFF 		bl	vTaskDelay
+ 128              	.LVL11:
+  63:Drivers/usb_send/usb_send.c ****   ssd1306_Fill(Black);
+ 129              		.loc 1 63 3 view .LVU19
+ 130 008e 0020     		movs	r0, #0
+ 131 0090 FFF7FEFF 		bl	ssd1306_Fill
+ 132              	.LVL12:
+  64:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
+ 133              		.loc 1 64 3 view .LVU20
+ 134 0094 FFF7FEFF 		bl	ssd1306_UpdateScreen
+ 135              	.LVL13:
+  65:Drivers/usb_send/usb_send.c **** }
+ 136              		.loc 1 65 1 is_stmt 0 view .LVU21
+ 137 0098 03B0     		add	sp, sp, #12
+ 138              	.LCFI2:
+ 139              		.cfi_def_cfa_offset 20
+ 140              		@ sp needed
+ 141 009a F0BD     		pop	{r4, r5, r6, r7, pc}
+ 142              	.L4:
+ 143              		.align	2
+ 144              	.L3:
+ 145 009c 14000000 		.word	.LC0
+ 146 00a0 00000000 		.word	Font_7x10
+ 147 00a4 00000000 		.word	.LC1
+ 148 00a8 04000000 		.word	.LC2
+ 149 00ac 0C000000 		.word	.LC3
+ 150              		.cfi_endproc
+ 151              	.LFE72:
+ 153              		.section	.text.usb_send,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	usb_send
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	usb_send:
+ 161              	.LVL14:
+ 162              	.LFB73:
+  66:Drivers/usb_send/usb_send.c **** 
+ARM GAS  /tmp/ccBVnRhY.s 			page 5
+
+
+  67:Drivers/usb_send/usb_send.c **** /**
+  68:Drivers/usb_send/usb_send.c ****   @brief This function will write the usb command code into
+  69:Drivers/usb_send/usb_send.c ****          a buffer that will be send to the usb latter
+  70:Drivers/usb_send/usb_send.c ****          @param - keyboardside - the side of the keyboard(l - left; r right)
+  71:Drivers/usb_send/usb_send.c ****          @param - column - the column of the key
+  72:Drivers/usb_send/usb_send.c ****          @param - row - the row of the key
+  73:Drivers/usb_send/usb_send.c ****  */
+  74:Drivers/usb_send/usb_send.c **** void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
+ 163              		.loc 1 74 62 is_stmt 1 view -0
+ 164              		.cfi_startproc
+ 165              		@ args = 0, pretend = 0, frame = 0
+ 166              		@ frame_needed = 0, uses_anonymous_args = 0
+ 167              		.loc 1 74 62 is_stmt 0 view .LVU23
+ 168 0000 38B5     		push	{r3, r4, r5, lr}
+ 169              	.LCFI3:
+ 170              		.cfi_def_cfa_offset 16
+ 171              		.cfi_offset 3, -16
+ 172              		.cfi_offset 4, -12
+ 173              		.cfi_offset 5, -8
+ 174              		.cfi_offset 14, -4
   75:Drivers/usb_send/usb_send.c **** 
-  76:Drivers/usb_send/usb_send.c **** /**
-  77:Drivers/usb_send/usb_send.c **** 	 @brief will send the variable keyboar_commands 
-  78:Drivers/usb_send/usb_send.c ****  */
-  79:Drivers/usb_send/usb_send.c **** // This will that a command then saves it into a buffer
-  80:Drivers/usb_send/usb_send.c **** void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
-  81:Drivers/usb_send/usb_send.c ****   /* usb_sender_test(keyboarSide, test_keys[column], test_keys[row]); */
-  82:Drivers/usb_send/usb_send.c ****   extern keyboard_command_t keyboard_commands_to_send;
-  83:Drivers/usb_send/usb_send.c ****   uint8_t key = 0;
-  84:Drivers/usb_send/usb_send.c ****   // usb_sender_test(keyboarSide, column, row);
-  85:Drivers/usb_send/usb_send.c ****   if (keyboarSide == 'l') {
+  76:Drivers/usb_send/usb_send.c ****   // buffer that will store the command to be send
+  77:Drivers/usb_send/usb_send.c ****   extern keyboard_command_t keyboard_commands_to_send;
+ 175              		.loc 1 77 3 is_stmt 1 view .LVU24
+  78:Drivers/usb_send/usb_send.c **** 
+  79:Drivers/usb_send/usb_send.c ****   // variable that will store the code
+  80:Drivers/usb_send/usb_send.c ****   uint8_t key = 0;
+ 176              		.loc 1 80 3 view .LVU25
+ 177              	.LVL15:
+  81:Drivers/usb_send/usb_send.c **** 
+  82:Drivers/usb_send/usb_send.c ****   // wil checks if the button came from the left side
+  83:Drivers/usb_send/usb_send.c ****   if (keyboarSide == 'l') {
+ 178              		.loc 1 83 3 view .LVU26
+ 179              		.loc 1 83 6 is_stmt 0 view .LVU27
+ 180 0002 6C28     		cmp	r0, #108
+ 181 0004 23D0     		beq	.L21
+  84:Drivers/usb_send/usb_send.c **** 
+  85:Drivers/usb_send/usb_send.c ****     // checks if the button for the special layler was pressed
   86:Drivers/usb_send/usb_send.c ****     if (isFunctionPressed == 0)
-  87:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_left[column][row];
-  88:Drivers/usb_send/usb_send.c ****     else
-  89:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_left_spc[column][row];
-ARM GAS  /tmp/cco3LQAv.s 			page 3
+  87:Drivers/usb_send/usb_send.c ****       // will pick the code of a key saved a tabel latter this
+  88:Drivers/usb_send/usb_send.c ****       // value will be stored in the buffer
+  89:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_left[column][row];
+  90:Drivers/usb_send/usb_send.c ****     else
+  91:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_left_spc[column][row];
+  92:Drivers/usb_send/usb_send.c **** 
+  93:Drivers/usb_send/usb_send.c ****     // checks if the key is a special key (shift, controll,
+  94:Drivers/usb_send/usb_send.c ****     // GUI aka windowns key, alt)
+  95:Drivers/usb_send/usb_send.c ****     if (key >= 232 && key != 240) {
+  96:Drivers/usb_send/usb_send.c ****       // Do the bitwise operation to set the modifier key for more info see:
+  97:Drivers/usb_send/usb_send.c ****       // pag -
+  98:Drivers/usb_send/usb_send.c ****       // of the document:
+  99:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
+ 100:Drivers/usb_send/usb_send.c ****       return;
+ 101:Drivers/usb_send/usb_send.c ****     }
+ 102:Drivers/usb_send/usb_send.c ****     // if the key pressed was the special layler key
+ 103:Drivers/usb_send/usb_send.c ****     // will save the state into a variabe to be use latter
+ 104:Drivers/usb_send/usb_send.c ****     else if (key == 240) {
+ARM GAS  /tmp/ccBVnRhY.s 			page 6
 
 
-  90:Drivers/usb_send/usb_send.c **** 
-  91:Drivers/usb_send/usb_send.c ****     if (key >= 232 && key != 240) {
-  92:Drivers/usb_send/usb_send.c ****       // Do the bitwise operation to set the modifier key for more info see:
-  93:Drivers/usb_send/usb_send.c ****       //  pag -
-  94:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
-  95:Drivers/usb_send/usb_send.c ****       return;
-  96:Drivers/usb_send/usb_send.c ****     } else if (key == 240) {
-  97:Drivers/usb_send/usb_send.c ****       isFunctionPressed = 1;
-  98:Drivers/usb_send/usb_send.c ****       key = 0;
-  99:Drivers/usb_send/usb_send.c ****     }
- 100:Drivers/usb_send/usb_send.c ****   } else if (keyboarSide == 'r') {
- 101:Drivers/usb_send/usb_send.c ****     if (isFunctionPressed == 0)
- 102:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right[column][row];
- 103:Drivers/usb_send/usb_send.c ****     else
- 104:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right_spc[column][row];
  105:Drivers/usb_send/usb_send.c **** 
- 106:Drivers/usb_send/usb_send.c ****     if (key >= 232 && key != 240) {
- 107:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
- 108:Drivers/usb_send/usb_send.c ****       return;
- 109:Drivers/usb_send/usb_send.c ****     } else if (key == 240) {
- 110:Drivers/usb_send/usb_send.c ****       isFunctionPressed = 1;
- 111:Drivers/usb_send/usb_send.c ****       key = 0;
- 112:Drivers/usb_send/usb_send.c ****     }
- 113:Drivers/usb_send/usb_send.c ****   }
- 114:Drivers/usb_send/usb_send.c **** 
- 115:Drivers/usb_send/usb_send.c ****   // Checks if the key pressed is in the strunct
- 116:Drivers/usb_send/usb_send.c ****   if (key == keyboard_commands_to_send.keycode_1 || key == keyboard_commands_to_send.keycode_2 ||
- 117:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
- 118:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_5) {
- 119:Drivers/usb_send/usb_send.c ****     return;
- 120:Drivers/usb_send/usb_send.c ****   }
- 121:Drivers/usb_send/usb_send.c **** 
- 122:Drivers/usb_send/usb_send.c ****   // Add the key to the struct if there is a space avalible
- 123:Drivers/usb_send/usb_send.c ****   if (!keyboard_commands_to_send.keycode_1) {
- 124:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_1 = key;
- 125:Drivers/usb_send/usb_send.c ****     return;
- 126:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_2 && key != keyboard_commands_to_send.keycode_2) {
- 127:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_2 = key;
- 128:Drivers/usb_send/usb_send.c ****     return;
- 129:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_3) {
- 130:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_3 = key;
- 131:Drivers/usb_send/usb_send.c ****     return;
- 132:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_4) {
- 133:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_4 = key;
- 134:Drivers/usb_send/usb_send.c ****     return;
- 135:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_5) {
- 136:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_5 = key;
- 137:Drivers/usb_send/usb_send.c ****     return;
- 138:Drivers/usb_send/usb_send.c ****   }
- 139:Drivers/usb_send/usb_send.c ****   /* vTaskDelay(10 / portTICK_PERIOD_MS); */
- 140:Drivers/usb_send/usb_send.c **** }
- 141:Drivers/usb_send/usb_send.c **** 
- 142:Drivers/usb_send/usb_send.c **** void usb_send_task(void *vParams) {
-  27              		.loc 1 142 35 view -0
-  28              		.cfi_startproc
-  29              		@ args = 0, pretend = 0, frame = 0
-  30              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  /tmp/cco3LQAv.s 			page 4
+ 106:Drivers/usb_send/usb_send.c ****       isFunctionPressed = !isFunctionPressed;
+ 107:Drivers/usb_send/usb_send.c ****       key = 0;
+ 108:Drivers/usb_send/usb_send.c ****     }
+ 109:Drivers/usb_send/usb_send.c ****   }
+ 110:Drivers/usb_send/usb_send.c **** 
+ 111:Drivers/usb_send/usb_send.c ****   // The same thing that above but this time with the right
+ 112:Drivers/usb_send/usb_send.c ****   // side of the keyboard
+ 113:Drivers/usb_send/usb_send.c ****   else if (keyboarSide == 'r') {
+ 182              		.loc 1 113 8 is_stmt 1 view .LVU28
+ 183              		.loc 1 113 11 is_stmt 0 view .LVU29
+ 184 0006 7228     		cmp	r0, #114
+ 185 0008 45D0     		beq	.L22
+  80:Drivers/usb_send/usb_send.c **** 
+ 186              		.loc 1 80 11 view .LVU30
+ 187 000a 0023     		movs	r3, #0
+ 188              	.LVL16:
+ 189              	.L9:
+ 114:Drivers/usb_send/usb_send.c ****     if (isFunctionPressed == 0)
+ 115:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right[column][row];
+ 116:Drivers/usb_send/usb_send.c ****     else
+ 117:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right_spc[column][row];
+ 118:Drivers/usb_send/usb_send.c **** 
+ 119:Drivers/usb_send/usb_send.c ****     if (key >= 232 && key != 240) {
+ 120:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
+ 121:Drivers/usb_send/usb_send.c ****       return;
+ 122:Drivers/usb_send/usb_send.c ****     } else if (key == 240) {
+ 123:Drivers/usb_send/usb_send.c ****       isFunctionPressed = 1;
+ 124:Drivers/usb_send/usb_send.c ****       key = 0;
+ 125:Drivers/usb_send/usb_send.c ****       vTaskDelay(200 / portTICK_PERIOD_MS);
+ 126:Drivers/usb_send/usb_send.c ****     }
+ 127:Drivers/usb_send/usb_send.c ****   }
+ 128:Drivers/usb_send/usb_send.c **** 
+ 129:Drivers/usb_send/usb_send.c ****   // Checks if the key pressed is in the buffer
+ 130:Drivers/usb_send/usb_send.c ****   if (key == keyboard_commands_to_send.keycode_1 ||
+ 190              		.loc 1 130 3 is_stmt 1 view .LVU31
+ 191              		.loc 1 130 39 is_stmt 0 view .LVU32
+ 192 000c 3A4A     		ldr	r2, .L27
+ 193 000e 9278     		ldrb	r2, [r2, #2]	@ zero_extendqisi2
+ 194              		.loc 1 130 6 view .LVU33
+ 195 0010 9A42     		cmp	r2, r3
+ 196 0012 67D0     		beq	.L5
+ 131:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_2 ||
+ 197              		.loc 1 131 39 discriminator 1 view .LVU34
+ 198 0014 3849     		ldr	r1, .L27
+ 199 0016 C978     		ldrb	r1, [r1, #3]	@ zero_extendqisi2
+ 130:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_2 ||
+ 200              		.loc 1 130 50 discriminator 1 view .LVU35
+ 201 0018 9942     		cmp	r1, r3
+ 202 001a 63D0     		beq	.L5
+ 132:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 ||
+ 203              		.loc 1 132 39 view .LVU36
+ 204 001c 3648     		ldr	r0, .L27
+ 205 001e 0079     		ldrb	r0, [r0, #4]	@ zero_extendqisi2
+ 131:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_2 ||
+ 206              		.loc 1 131 50 view .LVU37
+ 207 0020 9842     		cmp	r0, r3
+ARM GAS  /tmp/ccBVnRhY.s 			page 7
 
 
-  31              	.LVL0:
-  32              		.loc 1 142 35 is_stmt 0 view .LVU1
-  33 0000 38B5     		push	{r3, r4, r5, lr}
-  34              	.LCFI0:
-  35              		.cfi_def_cfa_offset 16
-  36              		.cfi_offset 3, -16
-  37              		.cfi_offset 4, -12
-  38              		.cfi_offset 5, -8
-  39              		.cfi_offset 14, -4
-  40 0002 1DE0     		b	.L4
-  41              	.LVL1:
-  42              	.L2:
- 143:Drivers/usb_send/usb_send.c **** 
- 144:Drivers/usb_send/usb_send.c ****   extern keyboard_command_t keyboard_commands_to_send;
- 145:Drivers/usb_send/usb_send.c ****   static keyboard_command_t previous_comand;
- 146:Drivers/usb_send/usb_send.c ****   uint8_t repeatKey = 0;
- 147:Drivers/usb_send/usb_send.c ****   uint8_t prevKey = 0;
- 148:Drivers/usb_send/usb_send.c ****   uint8_t jump = 0;
- 149:Drivers/usb_send/usb_send.c **** 
- 150:Drivers/usb_send/usb_send.c ****   while (1) {
- 151:Drivers/usb_send/usb_send.c ****     jump = 0;
- 152:Drivers/usb_send/usb_send.c ****     // Send the command if a key was pressed
- 153:Drivers/usb_send/usb_send.c ****     if (keyboard_commands_to_send.keycode_1 || keyboard_commands_to_send.modifier_key) {
- 154:Drivers/usb_send/usb_send.c **** 
- 155:Drivers/usb_send/usb_send.c ****       /*
- 156:Drivers/usb_send/usb_send.c **** if (repeatKey == 0 && prevKey == keyboard_commands_to_send.keycode_1) {
- 157:Drivers/usb_send/usb_send.c **** for (uint8_t i = 0; i < 200; i++) {
- 158:Drivers/usb_send/usb_send.c **** if (!keyboard_commands_to_send.keycode_1) {
- 159:Drivers/usb_send/usb_send.c **** jump = 1;
- 160:Drivers/usb_send/usb_send.c **** }
- 161:Drivers/usb_send/usb_send.c **** if (prevKey != keyboard_commands_to_send.keycode_1)
- 162:Drivers/usb_send/usb_send.c **** break;
- 163:Drivers/usb_send/usb_send.c **** vTaskDelay(5 / portTICK_PERIOD_MS);
- 164:Drivers/usb_send/usb_send.c **** }
- 165:Drivers/usb_send/usb_send.c **** repeatKey = 1;
- 166:Drivers/usb_send/usb_send.c **** }
- 167:Drivers/usb_send/usb_send.c **** 
- 168:Drivers/usb_send/usb_send.c **** if (jump)
- 169:Drivers/usb_send/usb_send.c **** continue;
- 170:Drivers/usb_send/usb_send.c ****       */
- 171:Drivers/usb_send/usb_send.c ****       prevKey = keyboard_commands_to_send.keycode_1;
-  43              		.loc 1 171 7 is_stmt 1 view .LVU2
- 172:Drivers/usb_send/usb_send.c ****       USBD_HID_SendReport(&hUsbDeviceFS, &keyboard_commands_to_send,
-  44              		.loc 1 172 7 view .LVU3
-  45 0004 134C     		ldr	r4, .L6
-  46              	.LVL2:
-  47              		.loc 1 172 7 is_stmt 0 view .LVU4
-  48 0006 144D     		ldr	r5, .L6+4
-  49 0008 0822     		movs	r2, #8
-  50 000a 2146     		mov	r1, r4
-  51 000c 2846     		mov	r0, r5
-  52 000e FFF7FEFF 		bl	USBD_HID_SendReport
-  53              	.LVL3:
- 173:Drivers/usb_send/usb_send.c ****                           sizeof(keyboard_command_t));
+ 208 0022 5FD0     		beq	.L5
+ 133:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_4 ||
+ 209              		.loc 1 133 39 view .LVU38
+ 210 0024 344C     		ldr	r4, .L27
+ 211 0026 6479     		ldrb	r4, [r4, #5]	@ zero_extendqisi2
+ 132:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 ||
+ 212              		.loc 1 132 50 view .LVU39
+ 213 0028 9C42     		cmp	r4, r3
+ 214 002a 5BD0     		beq	.L5
+ 134:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_5) {
+ 215              		.loc 1 134 39 view .LVU40
+ 216 002c 324D     		ldr	r5, .L27
+ 217 002e AD79     		ldrb	r5, [r5, #6]	@ zero_extendqisi2
+ 133:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_4 ||
+ 218              		.loc 1 133 50 view .LVU41
+ 219 0030 9D42     		cmp	r5, r3
+ 220 0032 57D0     		beq	.L5
+ 135:Drivers/usb_send/usb_send.c ****     return;
+ 136:Drivers/usb_send/usb_send.c ****   }
+ 137:Drivers/usb_send/usb_send.c **** 
+ 138:Drivers/usb_send/usb_send.c ****   // Add the key to the buffer if there is a space avalible
+ 139:Drivers/usb_send/usb_send.c ****   if (!keyboard_commands_to_send.keycode_1) {
+ 221              		.loc 1 139 3 is_stmt 1 view .LVU42
+ 222              		.loc 1 139 6 is_stmt 0 view .LVU43
+ 223 0034 002A     		cmp	r2, #0
+ 224 0036 53D0     		beq	.L23
+ 140:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_1 = key;
+ 141:Drivers/usb_send/usb_send.c ****     return;
+ 142:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_2 &&
+ 225              		.loc 1 142 10 is_stmt 1 view .LVU44
+ 226              		.loc 1 142 13 is_stmt 0 view .LVU45
+ 227 0038 0029     		cmp	r1, #0
+ 228 003a 54D0     		beq	.L24
+ 143:Drivers/usb_send/usb_send.c ****              key != keyboard_commands_to_send.keycode_2) {
+ 144:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_2 = key;
+ 145:Drivers/usb_send/usb_send.c ****     return;
+ 146:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_3) {
+ 229              		.loc 1 146 10 is_stmt 1 view .LVU46
+ 230              		.loc 1 146 13 is_stmt 0 view .LVU47
+ 231 003c 0028     		cmp	r0, #0
+ 232 003e 55D0     		beq	.L25
+ 147:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_3 = key;
+ 148:Drivers/usb_send/usb_send.c ****     return;
+ 149:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_4) {
+ 233              		.loc 1 149 10 is_stmt 1 view .LVU48
+ 234              		.loc 1 149 13 is_stmt 0 view .LVU49
+ 235 0040 002C     		cmp	r4, #0
+ 236 0042 56D0     		beq	.L26
+ 150:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_4 = key;
+ 151:Drivers/usb_send/usb_send.c ****     return;
+ 152:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_5) {
+ 237              		.loc 1 152 10 is_stmt 1 view .LVU50
+ 238              		.loc 1 152 13 is_stmt 0 view .LVU51
+ 239 0044 002D     		cmp	r5, #0
+ 240 0046 4DD1     		bne	.L5
+ 153:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_5 = key;
+ 241              		.loc 1 153 5 is_stmt 1 view .LVU52
+ARM GAS  /tmp/ccBVnRhY.s 			page 8
+
+
+ 242              		.loc 1 153 41 is_stmt 0 view .LVU53
+ 243 0048 2B4A     		ldr	r2, .L27
+ 244 004a 9371     		strb	r3, [r2, #6]
+ 154:Drivers/usb_send/usb_send.c ****     return;
+ 245              		.loc 1 154 5 is_stmt 1 view .LVU54
+ 246 004c 4AE0     		b	.L5
+ 247              	.LVL17:
+ 248              	.L21:
+  86:Drivers/usb_send/usb_send.c ****       // will pick the code of a key saved a tabel latter this
+ 249              		.loc 1 86 5 view .LVU55
+  86:Drivers/usb_send/usb_send.c ****       // will pick the code of a key saved a tabel latter this
+ 250              		.loc 1 86 27 is_stmt 0 view .LVU56
+ 251 004e 2B4B     		ldr	r3, .L27+4
+ 252 0050 1868     		ldr	r0, [r3]
+ 253              	.LVL18:
+  86:Drivers/usb_send/usb_send.c ****       // will pick the code of a key saved a tabel latter this
+ 254              		.loc 1 86 8 view .LVU57
+ 255 0052 90B9     		cbnz	r0, .L7
+  89:Drivers/usb_send/usb_send.c ****     else
+ 256              		.loc 1 89 7 is_stmt 1 view .LVU58
+  89:Drivers/usb_send/usb_send.c ****     else
+ 257              		.loc 1 89 11 is_stmt 0 view .LVU59
+ 258 0054 01EB4101 		add	r1, r1, r1, lsl #1
+ 259              	.LVL19:
+  89:Drivers/usb_send/usb_send.c ****     else
+ 260              		.loc 1 89 11 view .LVU60
+ 261 0058 294B     		ldr	r3, .L27+8
+ 262 005a 03EB4103 		add	r3, r3, r1, lsl #1
+ 263 005e 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 264              	.LVL20:
+ 265              	.L8:
+  95:Drivers/usb_send/usb_send.c ****       // Do the bitwise operation to set the modifier key for more info see:
+ 266              		.loc 1 95 5 is_stmt 1 view .LVU61
+  95:Drivers/usb_send/usb_send.c ****       // Do the bitwise operation to set the modifier key for more info see:
+ 267              		.loc 1 95 8 is_stmt 0 view .LVU62
+ 268 0060 E72B     		cmp	r3, #231
+ 269 0062 D3D9     		bls	.L9
+  95:Drivers/usb_send/usb_send.c ****       // Do the bitwise operation to set the modifier key for more info see:
+ 270              		.loc 1 95 20 discriminator 1 view .LVU63
+ 271 0064 F02B     		cmp	r3, #240
+ 272 0066 0FD0     		beq	.L10
+  99:Drivers/usb_send/usb_send.c ****       return;
+ 273              		.loc 1 99 7 is_stmt 1 view .LVU64
+  99:Drivers/usb_send/usb_send.c ****       return;
+ 274              		.loc 1 99 32 is_stmt 0 view .LVU65
+ 275 0068 2349     		ldr	r1, .L27
+ 276 006a 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 277              	.LVL21:
+  99:Drivers/usb_send/usb_send.c ****       return;
+ 278              		.loc 1 99 59 view .LVU66
+ 279 006c A3F1E800 		sub	r0, r3, #232
+  99:Drivers/usb_send/usb_send.c ****       return;
+ 280              		.loc 1 99 51 view .LVU67
+ 281 0070 0123     		movs	r3, #1
+ 282              	.LVL22:
+  99:Drivers/usb_send/usb_send.c ****       return;
+ 283              		.loc 1 99 51 view .LVU68
+ARM GAS  /tmp/ccBVnRhY.s 			page 9
+
+
+ 284 0072 8340     		lsls	r3, r3, r0
+  99:Drivers/usb_send/usb_send.c ****       return;
+ 285              		.loc 1 99 46 view .LVU69
+ 286 0074 1343     		orrs	r3, r3, r2
+ 287 0076 0B70     		strb	r3, [r1]
+ 100:Drivers/usb_send/usb_send.c ****     }
+ 288              		.loc 1 100 7 is_stmt 1 view .LVU70
+ 289 0078 34E0     		b	.L5
+ 290              	.LVL23:
+ 291              	.L7:
+  91:Drivers/usb_send/usb_send.c **** 
+ 292              		.loc 1 91 7 view .LVU71
+  91:Drivers/usb_send/usb_send.c **** 
+ 293              		.loc 1 91 11 is_stmt 0 view .LVU72
+ 294 007a 01EB4101 		add	r1, r1, r1, lsl #1
+ 295              	.LVL24:
+  91:Drivers/usb_send/usb_send.c **** 
+ 296              		.loc 1 91 11 view .LVU73
+ 297 007e 214B     		ldr	r3, .L27+12
+ 298 0080 03EB4103 		add	r3, r3, r1, lsl #1
+ 299 0084 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 300              	.LVL25:
+  91:Drivers/usb_send/usb_send.c **** 
+ 301              		.loc 1 91 11 view .LVU74
+ 302 0086 EBE7     		b	.L8
+ 303              	.L10:
+ 104:Drivers/usb_send/usb_send.c **** 
+ 304              		.loc 1 104 10 is_stmt 1 view .LVU75
+ 106:Drivers/usb_send/usb_send.c ****       key = 0;
+ 305              		.loc 1 106 7 view .LVU76
+ 106:Drivers/usb_send/usb_send.c ****       key = 0;
+ 306              		.loc 1 106 27 is_stmt 0 view .LVU77
+ 307 0088 B0FA80F0 		clz	r0, r0
+ 308 008c 4009     		lsrs	r0, r0, #5
+ 106:Drivers/usb_send/usb_send.c ****       key = 0;
+ 309              		.loc 1 106 25 view .LVU78
+ 310 008e 1B4B     		ldr	r3, .L27+4
+ 311              	.LVL26:
+ 106:Drivers/usb_send/usb_send.c ****       key = 0;
+ 312              		.loc 1 106 25 view .LVU79
+ 313 0090 1860     		str	r0, [r3]
+ 107:Drivers/usb_send/usb_send.c ****     }
+ 314              		.loc 1 107 7 is_stmt 1 view .LVU80
+ 315              	.LVL27:
+ 107:Drivers/usb_send/usb_send.c ****     }
+ 316              		.loc 1 107 11 is_stmt 0 view .LVU81
+ 317 0092 0023     		movs	r3, #0
+ 318 0094 BAE7     		b	.L9
+ 319              	.LVL28:
+ 320              	.L22:
+ 114:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right[column][row];
+ 321              		.loc 1 114 5 is_stmt 1 view .LVU82
+ 114:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right[column][row];
+ 322              		.loc 1 114 27 is_stmt 0 view .LVU83
+ 323 0096 194B     		ldr	r3, .L27+4
+ 324 0098 1B68     		ldr	r3, [r3]
+ 114:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right[column][row];
+ARM GAS  /tmp/ccBVnRhY.s 			page 10
+
+
+ 325              		.loc 1 114 8 view .LVU84
+ 326 009a 93B9     		cbnz	r3, .L12
+ 115:Drivers/usb_send/usb_send.c ****     else
+ 327              		.loc 1 115 7 is_stmt 1 view .LVU85
+ 115:Drivers/usb_send/usb_send.c ****     else
+ 328              		.loc 1 115 11 is_stmt 0 view .LVU86
+ 329 009c 01EB4101 		add	r1, r1, r1, lsl #1
+ 330              	.LVL29:
+ 115:Drivers/usb_send/usb_send.c ****     else
+ 331              		.loc 1 115 11 view .LVU87
+ 332 00a0 194B     		ldr	r3, .L27+16
+ 333 00a2 03EB4103 		add	r3, r3, r1, lsl #1
+ 334 00a6 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 335              	.LVL30:
+ 336              	.L13:
+ 119:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
+ 337              		.loc 1 119 5 is_stmt 1 view .LVU88
+ 119:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
+ 338              		.loc 1 119 8 is_stmt 0 view .LVU89
+ 339 00a8 E72B     		cmp	r3, #231
+ 340 00aa AFD9     		bls	.L9
+ 119:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
+ 341              		.loc 1 119 20 discriminator 1 view .LVU90
+ 342 00ac F02B     		cmp	r3, #240
+ 343 00ae 0FD0     		beq	.L14
+ 120:Drivers/usb_send/usb_send.c ****       return;
+ 344              		.loc 1 120 7 is_stmt 1 view .LVU91
+ 120:Drivers/usb_send/usb_send.c ****       return;
+ 345              		.loc 1 120 32 is_stmt 0 view .LVU92
+ 346 00b0 1149     		ldr	r1, .L27
+ 347 00b2 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
+ 348              	.LVL31:
+ 120:Drivers/usb_send/usb_send.c ****       return;
+ 349              		.loc 1 120 59 view .LVU93
+ 350 00b4 A3F1E800 		sub	r0, r3, #232
+ 351              	.LVL32:
+ 120:Drivers/usb_send/usb_send.c ****       return;
+ 352              		.loc 1 120 51 view .LVU94
+ 353 00b8 0123     		movs	r3, #1
+ 354              	.LVL33:
+ 120:Drivers/usb_send/usb_send.c ****       return;
+ 355              		.loc 1 120 51 view .LVU95
+ 356 00ba 8340     		lsls	r3, r3, r0
+ 120:Drivers/usb_send/usb_send.c ****       return;
+ 357              		.loc 1 120 46 view .LVU96
+ 358 00bc 1343     		orrs	r3, r3, r2
+ 359 00be 0B70     		strb	r3, [r1]
+ 121:Drivers/usb_send/usb_send.c ****     } else if (key == 240) {
+ 360              		.loc 1 121 7 is_stmt 1 view .LVU97
+ 361 00c0 10E0     		b	.L5
+ 362              	.LVL34:
+ 363              	.L12:
+ 117:Drivers/usb_send/usb_send.c **** 
+ 364              		.loc 1 117 7 view .LVU98
+ 117:Drivers/usb_send/usb_send.c **** 
+ 365              		.loc 1 117 11 is_stmt 0 view .LVU99
+ 366 00c2 01EB4101 		add	r1, r1, r1, lsl #1
+ARM GAS  /tmp/ccBVnRhY.s 			page 11
+
+
+ 367              	.LVL35:
+ 117:Drivers/usb_send/usb_send.c **** 
+ 368              		.loc 1 117 11 view .LVU100
+ 369 00c6 114B     		ldr	r3, .L27+20
+ 370 00c8 03EB4103 		add	r3, r3, r1, lsl #1
+ 371 00cc 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
+ 372              	.LVL36:
+ 117:Drivers/usb_send/usb_send.c **** 
+ 373              		.loc 1 117 11 view .LVU101
+ 374 00ce EBE7     		b	.L13
+ 375              	.L14:
+ 122:Drivers/usb_send/usb_send.c ****       isFunctionPressed = 1;
+ 376              		.loc 1 122 12 is_stmt 1 view .LVU102
+ 123:Drivers/usb_send/usb_send.c ****       key = 0;
+ 377              		.loc 1 123 7 view .LVU103
+ 123:Drivers/usb_send/usb_send.c ****       key = 0;
+ 378              		.loc 1 123 25 is_stmt 0 view .LVU104
+ 379 00d0 0A4B     		ldr	r3, .L27+4
+ 380              	.LVL37:
+ 123:Drivers/usb_send/usb_send.c ****       key = 0;
+ 381              		.loc 1 123 25 view .LVU105
+ 382 00d2 0122     		movs	r2, #1
+ 383              	.LVL38:
+ 123:Drivers/usb_send/usb_send.c ****       key = 0;
+ 384              		.loc 1 123 25 view .LVU106
+ 385 00d4 1A60     		str	r2, [r3]
+ 124:Drivers/usb_send/usb_send.c ****       vTaskDelay(200 / portTICK_PERIOD_MS);
+ 386              		.loc 1 124 7 is_stmt 1 view .LVU107
+ 387              	.LVL39:
+ 125:Drivers/usb_send/usb_send.c ****     }
+ 388              		.loc 1 125 7 view .LVU108
+ 389 00d6 C820     		movs	r0, #200
+ 390              	.LVL40:
+ 125:Drivers/usb_send/usb_send.c ****     }
+ 391              		.loc 1 125 7 is_stmt 0 view .LVU109
+ 392 00d8 FFF7FEFF 		bl	vTaskDelay
+ 393              	.LVL41:
+ 124:Drivers/usb_send/usb_send.c ****       vTaskDelay(200 / portTICK_PERIOD_MS);
+ 394              		.loc 1 124 11 view .LVU110
+ 395 00dc 0023     		movs	r3, #0
+ 396 00de 95E7     		b	.L9
+ 397              	.LVL42:
+ 398              	.L23:
+ 140:Drivers/usb_send/usb_send.c ****     return;
+ 399              		.loc 1 140 5 is_stmt 1 view .LVU111
+ 140:Drivers/usb_send/usb_send.c ****     return;
+ 400              		.loc 1 140 41 is_stmt 0 view .LVU112
+ 401 00e0 054A     		ldr	r2, .L27
+ 402 00e2 9370     		strb	r3, [r2, #2]
+ 141:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_2 &&
+ 403              		.loc 1 141 5 is_stmt 1 view .LVU113
+ 404              	.LVL43:
+ 405              	.L5:
+ 155:Drivers/usb_send/usb_send.c ****   }
+ 156:Drivers/usb_send/usb_send.c ****   /* vTaskDelay(10 / portTICK_PERIOD_MS); */
+ 157:Drivers/usb_send/usb_send.c **** }
+ 406              		.loc 1 157 1 is_stmt 0 view .LVU114
+ARM GAS  /tmp/ccBVnRhY.s 			page 12
+
+
+ 407 00e4 38BD     		pop	{r3, r4, r5, pc}
+ 408              	.LVL44:
+ 409              	.L24:
+ 144:Drivers/usb_send/usb_send.c ****     return;
+ 410              		.loc 1 144 5 is_stmt 1 view .LVU115
+ 144:Drivers/usb_send/usb_send.c ****     return;
+ 411              		.loc 1 144 41 is_stmt 0 view .LVU116
+ 412 00e6 044A     		ldr	r2, .L27
+ 413 00e8 D370     		strb	r3, [r2, #3]
+ 145:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_3) {
+ 414              		.loc 1 145 5 is_stmt 1 view .LVU117
+ 415 00ea FBE7     		b	.L5
+ 416              	.L25:
+ 147:Drivers/usb_send/usb_send.c ****     return;
+ 417              		.loc 1 147 5 view .LVU118
+ 147:Drivers/usb_send/usb_send.c ****     return;
+ 418              		.loc 1 147 41 is_stmt 0 view .LVU119
+ 419 00ec 024A     		ldr	r2, .L27
+ 420 00ee 1371     		strb	r3, [r2, #4]
+ 148:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_4) {
+ 421              		.loc 1 148 5 is_stmt 1 view .LVU120
+ 422 00f0 F8E7     		b	.L5
+ 423              	.L26:
+ 150:Drivers/usb_send/usb_send.c ****     return;
+ 424              		.loc 1 150 5 view .LVU121
+ 150:Drivers/usb_send/usb_send.c ****     return;
+ 425              		.loc 1 150 41 is_stmt 0 view .LVU122
+ 426 00f2 014A     		ldr	r2, .L27
+ 427 00f4 5371     		strb	r3, [r2, #5]
+ 151:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_5) {
+ 428              		.loc 1 151 5 is_stmt 1 view .LVU123
+ 429 00f6 F5E7     		b	.L5
+ 430              	.L28:
+ 431              		.align	2
+ 432              	.L27:
+ 433 00f8 00000000 		.word	keyboard_commands_to_send
+ 434 00fc 00000000 		.word	isFunctionPressed
+ 435 0100 00000000 		.word	keyboard_keys_left
+ 436 0104 00000000 		.word	keyboard_keys_left_spc
+ 437 0108 00000000 		.word	keyboard_keys_right
+ 438 010c 00000000 		.word	keyboard_keys_right_spc
+ 439              		.cfi_endproc
+ 440              	.LFE73:
+ 442              		.section	.text.usb_send_clear_keyboard_command,"ax",%progbits
+ 443              		.align	1
+ 444              		.global	usb_send_clear_keyboard_command
+ 445              		.syntax unified
+ 446              		.thumb
+ 447              		.thumb_func
+ 449              	usb_send_clear_keyboard_command:
+ 450              	.LVL45:
+ 451              	.LFB74:
+ 158:Drivers/usb_send/usb_send.c **** 
+ 159:Drivers/usb_send/usb_send.c **** void usb_send_clear_keyboard_command(keyboard_command_t *command) {
+ 452              		.loc 1 159 67 view -0
+ 453              		.cfi_startproc
+ 454              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  /tmp/ccBVnRhY.s 			page 13
+
+
+ 455              		@ frame_needed = 0, uses_anonymous_args = 0
+ 456              		.loc 1 159 67 is_stmt 0 view .LVU125
+ 457 0000 08B5     		push	{r3, lr}
+ 458              	.LCFI4:
+ 459              		.cfi_def_cfa_offset 8
+ 460              		.cfi_offset 3, -8
+ 461              		.cfi_offset 14, -4
+ 160:Drivers/usb_send/usb_send.c ****   command->keycode_1 = 0;
+ 462              		.loc 1 160 3 is_stmt 1 view .LVU126
+ 463              		.loc 1 160 22 is_stmt 0 view .LVU127
+ 464 0002 0023     		movs	r3, #0
+ 465 0004 8370     		strb	r3, [r0, #2]
+ 161:Drivers/usb_send/usb_send.c ****   command->keycode_2 = 0;
+ 466              		.loc 1 161 3 is_stmt 1 view .LVU128
+ 467              		.loc 1 161 22 is_stmt 0 view .LVU129
+ 468 0006 C370     		strb	r3, [r0, #3]
+ 162:Drivers/usb_send/usb_send.c ****   command->keycode_3 = 0;
+ 469              		.loc 1 162 3 is_stmt 1 view .LVU130
+ 470              		.loc 1 162 22 is_stmt 0 view .LVU131
+ 471 0008 0371     		strb	r3, [r0, #4]
+ 163:Drivers/usb_send/usb_send.c ****   command->keycode_4 = 0;
+ 472              		.loc 1 163 3 is_stmt 1 view .LVU132
+ 473              		.loc 1 163 22 is_stmt 0 view .LVU133
+ 474 000a 4371     		strb	r3, [r0, #5]
+ 164:Drivers/usb_send/usb_send.c ****   command->keycode_5 = 0;
+ 475              		.loc 1 164 3 is_stmt 1 view .LVU134
+ 476              		.loc 1 164 22 is_stmt 0 view .LVU135
+ 477 000c 8371     		strb	r3, [r0, #6]
+ 165:Drivers/usb_send/usb_send.c ****   command->modifier_key = 0;
+ 478              		.loc 1 165 3 is_stmt 1 view .LVU136
+ 479              		.loc 1 165 25 is_stmt 0 view .LVU137
+ 480 000e 0370     		strb	r3, [r0]
+ 166:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
+ 481              		.loc 1 166 3 is_stmt 1 view .LVU138
+ 482 0010 FFF7FEFF 		bl	ssd1306_UpdateScreen
+ 483              	.LVL46:
+ 167:Drivers/usb_send/usb_send.c **** }
+ 484              		.loc 1 167 1 is_stmt 0 view .LVU139
+ 485 0014 08BD     		pop	{r3, pc}
+ 486              		.cfi_endproc
+ 487              	.LFE74:
+ 489              		.section	.text.usb_send_task,"ax",%progbits
+ 490              		.align	1
+ 491              		.global	usb_send_task
+ 492              		.syntax unified
+ 493              		.thumb
+ 494              		.thumb_func
+ 496              	usb_send_task:
+ 497              	.LFB75:
+ 168:Drivers/usb_send/usb_send.c **** 
+ 169:Drivers/usb_send/usb_send.c **** /**
+ 170:Drivers/usb_send/usb_send.c ****          @brief - will checks periodically the keyboard_commands_to_send
+ 171:Drivers/usb_send/usb_send.c ****                                  buffer to send the command to the usb
+ 172:Drivers/usb_send/usb_send.c ****  */
+ 173:Drivers/usb_send/usb_send.c **** void usb_send_task(void *vParams) {
+ 498              		.loc 1 173 35 is_stmt 1 view -0
+ 499              		.cfi_startproc
+ARM GAS  /tmp/ccBVnRhY.s 			page 14
+
+
+ 500              		@ args = 0, pretend = 0, frame = 0
+ 501              		@ frame_needed = 0, uses_anonymous_args = 0
+ 502              	.LVL47:
+ 503              		.loc 1 173 35 is_stmt 0 view .LVU141
+ 504 0000 38B5     		push	{r3, r4, r5, lr}
+ 505              	.LCFI5:
+ 506              		.cfi_def_cfa_offset 16
+ 507              		.cfi_offset 3, -16
+ 508              		.cfi_offset 4, -12
+ 509              		.cfi_offset 5, -8
+ 510              		.cfi_offset 14, -4
+ 511 0002 17E0     		b	.L34
+ 512              	.LVL48:
+ 513              	.L32:
  174:Drivers/usb_send/usb_send.c **** 
- 175:Drivers/usb_send/usb_send.c ****       vTaskDelay(30 / portTICK_PERIOD_MS);
-  54              		.loc 1 175 7 is_stmt 1 view .LVU5
-ARM GAS  /tmp/cco3LQAv.s 			page 5
-
-
-  55 0012 1E20     		movs	r0, #30
-  56 0014 FFF7FEFF 		bl	vTaskDelay
-  57              	.LVL4:
- 176:Drivers/usb_send/usb_send.c ****       // Reset the keyboard commands
- 177:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.keycode_1 = 0;
-  58              		.loc 1 177 7 view .LVU6
-  59              		.loc 1 177 43 is_stmt 0 view .LVU7
-  60 0018 0023     		movs	r3, #0
-  61 001a A370     		strb	r3, [r4, #2]
- 178:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.keycode_2 = 0;
-  62              		.loc 1 178 7 is_stmt 1 view .LVU8
-  63              		.loc 1 178 43 is_stmt 0 view .LVU9
-  64 001c E370     		strb	r3, [r4, #3]
- 179:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.keycode_3 = 0;
-  65              		.loc 1 179 7 is_stmt 1 view .LVU10
-  66              		.loc 1 179 43 is_stmt 0 view .LVU11
-  67 001e 2371     		strb	r3, [r4, #4]
- 180:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.keycode_4 = 0;
-  68              		.loc 1 180 7 is_stmt 1 view .LVU12
-  69              		.loc 1 180 43 is_stmt 0 view .LVU13
-  70 0020 6371     		strb	r3, [r4, #5]
- 181:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.keycode_5 = 0;
-  71              		.loc 1 181 7 is_stmt 1 view .LVU14
-  72              		.loc 1 181 43 is_stmt 0 view .LVU15
-  73 0022 A371     		strb	r3, [r4, #6]
- 182:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key = 0;
-  74              		.loc 1 182 7 is_stmt 1 view .LVU16
-  75              		.loc 1 182 46 is_stmt 0 view .LVU17
-  76 0024 2370     		strb	r3, [r4]
- 183:Drivers/usb_send/usb_send.c ****       isFunctionPressed = 0;
-  77              		.loc 1 183 7 is_stmt 1 view .LVU18
-  78              		.loc 1 183 25 is_stmt 0 view .LVU19
-  79 0026 0D4A     		ldr	r2, .L6+8
-  80 0028 1360     		str	r3, [r2]
- 184:Drivers/usb_send/usb_send.c **** 
- 185:Drivers/usb_send/usb_send.c ****       USBD_HID_SendReport(&hUsbDeviceFS, &keyboard_commands_to_send,
-  81              		.loc 1 185 7 is_stmt 1 view .LVU20
-  82 002a 0822     		movs	r2, #8
-  83 002c 2146     		mov	r1, r4
-  84 002e 2846     		mov	r0, r5
-  85 0030 FFF7FEFF 		bl	USBD_HID_SendReport
-  86              	.LVL5:
- 186:Drivers/usb_send/usb_send.c ****                           sizeof(keyboard_command_t));
- 187:Drivers/usb_send/usb_send.c ****       vTaskDelay(10 / portTICK_PERIOD_MS);
-  87              		.loc 1 187 7 view .LVU21
-  88 0034 0A20     		movs	r0, #10
-  89 0036 FFF7FEFF 		bl	vTaskDelay
-  90              	.LVL6:
-  91              	.L3:
- 188:Drivers/usb_send/usb_send.c ****       /* vTaskDelay(200 / portTICK_PERIOD_MS); */
- 189:Drivers/usb_send/usb_send.c ****       /* ssd1306_Fill(Black); */
- 190:Drivers/usb_send/usb_send.c ****       /* ssd1306_UpdateScreen(); */
- 191:Drivers/usb_send/usb_send.c ****     } else {
- 192:Drivers/usb_send/usb_send.c ****       repeatKey = 0;
- 193:Drivers/usb_send/usb_send.c ****     }
- 194:Drivers/usb_send/usb_send.c ****     vTaskDelay(10 / portTICK_PERIOD_MS);
-  92              		.loc 1 194 5 view .LVU22
-ARM GAS  /tmp/cco3LQAv.s 			page 6
-
-
-  93 003a 0A20     		movs	r0, #10
-  94 003c FFF7FEFF 		bl	vTaskDelay
-  95              	.LVL7:
- 150:Drivers/usb_send/usb_send.c ****     jump = 0;
-  96              		.loc 1 150 9 view .LVU23
-  97              	.L4:
- 150:Drivers/usb_send/usb_send.c ****     jump = 0;
-  98              		.loc 1 150 3 view .LVU24
- 151:Drivers/usb_send/usb_send.c ****     // Send the command if a key was pressed
-  99              		.loc 1 151 5 view .LVU25
- 153:Drivers/usb_send/usb_send.c **** 
- 100              		.loc 1 153 5 view .LVU26
- 153:Drivers/usb_send/usb_send.c **** 
- 101              		.loc 1 153 34 is_stmt 0 view .LVU27
- 102 0040 044B     		ldr	r3, .L6
- 103 0042 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
- 153:Drivers/usb_send/usb_send.c **** 
- 104              		.loc 1 153 8 view .LVU28
- 105 0044 002B     		cmp	r3, #0
- 106 0046 DDD1     		bne	.L2
- 153:Drivers/usb_send/usb_send.c **** 
- 107              		.loc 1 153 73 discriminator 1 view .LVU29
- 108 0048 024B     		ldr	r3, .L6
- 109 004a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
- 153:Drivers/usb_send/usb_send.c **** 
- 110              		.loc 1 153 45 discriminator 1 view .LVU30
- 111 004c 002B     		cmp	r3, #0
- 112 004e F4D0     		beq	.L3
- 113 0050 D8E7     		b	.L2
- 114              	.L7:
- 115 0052 00BF     		.align	2
- 116              	.L6:
- 117 0054 00000000 		.word	keyboard_commands_to_send
- 118 0058 00000000 		.word	hUsbDeviceFS
- 119 005c 00000000 		.word	isFunctionPressed
- 120              		.cfi_endproc
- 121              	.LFE74:
- 123              		.section	.rodata.usb_sender_test.str1.4,"aMS",%progbits,1
- 124              		.align	2
- 125              	.LC1:
- 126 0000 4B2D00   		.ascii	"K-\000"
- 127 0003 00       		.align	2
- 128              	.LC2:
- 129 0004 20526F77 		.ascii	" Row-\000"
- 129      2D00
- 130 000a 0000     		.align	2
- 131              	.LC3:
- 132 000c 20436F6C 		.ascii	" Col-\000"
- 132      2D00
- 133 0012 0000     		.align	2
- 134              	.LC0:
- 135 0014 30313233 		.ascii	"012345\000"
- 135      343500
- 136              		.section	.text.usb_sender_test,"ax",%progbits
- 137              		.align	1
- 138              		.global	usb_sender_test
- 139              		.syntax unified
-ARM GAS  /tmp/cco3LQAv.s 			page 7
-
-
- 140              		.thumb
- 141              		.thumb_func
- 143              	usb_sender_test:
- 144              	.LVL8:
- 145              	.LFB72:
-  58:Drivers/usb_send/usb_send.c ****   const char test_chars[6] = {'0', '1', '2', '3', '4', '5'};
- 146              		.loc 1 58 70 is_stmt 1 view -0
- 147              		.cfi_startproc
- 148              		@ args = 0, pretend = 0, frame = 8
- 149              		@ frame_needed = 0, uses_anonymous_args = 0
-  58:Drivers/usb_send/usb_send.c ****   const char test_chars[6] = {'0', '1', '2', '3', '4', '5'};
- 150              		.loc 1 58 70 is_stmt 0 view .LVU32
- 151 0000 F0B5     		push	{r4, r5, r6, r7, lr}
- 152              	.LCFI1:
- 153              		.cfi_def_cfa_offset 20
- 154              		.cfi_offset 4, -20
- 155              		.cfi_offset 5, -16
- 156              		.cfi_offset 6, -12
- 157              		.cfi_offset 7, -8
- 158              		.cfi_offset 14, -4
- 159 0002 83B0     		sub	sp, sp, #12
- 160              	.LCFI2:
- 161              		.cfi_def_cfa_offset 32
- 162 0004 0746     		mov	r7, r0
- 163 0006 0D46     		mov	r5, r1
- 164 0008 1646     		mov	r6, r2
-  59:Drivers/usb_send/usb_send.c **** 
- 165              		.loc 1 59 3 is_stmt 1 view .LVU33
-  59:Drivers/usb_send/usb_send.c **** 
- 166              		.loc 1 59 14 is_stmt 0 view .LVU34
- 167 000a 244B     		ldr	r3, .L10
- 168 000c 93E80300 		ldm	r3, {r0, r1}
- 169              	.LVL9:
-  59:Drivers/usb_send/usb_send.c **** 
- 170              		.loc 1 59 14 view .LVU35
- 171 0010 0090     		str	r0, [sp]
- 172 0012 ADF80410 		strh	r1, [sp, #4]	@ movhi
-  61:Drivers/usb_send/usb_send.c ****   ssd1306_SetCursor(0, 0);
- 173              		.loc 1 61 3 is_stmt 1 view .LVU36
- 174 0016 0020     		movs	r0, #0
- 175 0018 FFF7FEFF 		bl	ssd1306_Fill
- 176              	.LVL10:
-  62:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString("K-", Font_7x10, White);
- 177              		.loc 1 62 3 view .LVU37
- 178 001c 0021     		movs	r1, #0
- 179 001e 0846     		mov	r0, r1
- 180 0020 FFF7FEFF 		bl	ssd1306_SetCursor
- 181              	.LVL11:
-  63:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(keyboardSide, Font_7x10, White);
- 182              		.loc 1 63 3 view .LVU38
- 183 0024 1E4C     		ldr	r4, .L10+4
- 184 0026 0123     		movs	r3, #1
- 185 0028 94E80600 		ldm	r4, {r1, r2}
- 186 002c 1D48     		ldr	r0, .L10+8
- 187 002e FFF7FEFF 		bl	ssd1306_WriteString
- 188              	.LVL12:
-  64:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString(" Row-", Font_7x10, White);
-ARM GAS  /tmp/cco3LQAv.s 			page 8
-
-
- 189              		.loc 1 64 3 view .LVU39
- 190 0032 0123     		movs	r3, #1
- 191 0034 94E80600 		ldm	r4, {r1, r2}
- 192 0038 3846     		mov	r0, r7
- 193 003a FFF7FEFF 		bl	ssd1306_WriteChar
- 194              	.LVL13:
-  65:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(test_chars[row], Font_7x10, White);
- 195              		.loc 1 65 3 view .LVU40
- 196 003e 0123     		movs	r3, #1
- 197 0040 94E80600 		ldm	r4, {r1, r2}
- 198 0044 1848     		ldr	r0, .L10+12
- 199 0046 FFF7FEFF 		bl	ssd1306_WriteString
- 200              	.LVL14:
-  66:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString(" Col-", Font_7x10, White);
- 201              		.loc 1 66 3 view .LVU41
-  66:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString(" Col-", Font_7x10, White);
- 202              		.loc 1 66 31 is_stmt 0 view .LVU42
- 203 004a 06F10803 		add	r3, r6, #8
- 204 004e 0DEB0306 		add	r6, sp, r3
-  66:Drivers/usb_send/usb_send.c ****   ssd1306_WriteString(" Col-", Font_7x10, White);
- 205              		.loc 1 66 3 view .LVU43
- 206 0052 0123     		movs	r3, #1
- 207 0054 94E80600 		ldm	r4, {r1, r2}
- 208 0058 16F8080C 		ldrb	r0, [r6, #-8]	@ zero_extendqisi2
- 209 005c FFF7FEFF 		bl	ssd1306_WriteChar
- 210              	.LVL15:
-  67:Drivers/usb_send/usb_send.c ****   ssd1306_WriteChar(test_chars[column], Font_7x10, White);
- 211              		.loc 1 67 3 is_stmt 1 view .LVU44
- 212 0060 0123     		movs	r3, #1
- 213 0062 94E80600 		ldm	r4, {r1, r2}
- 214 0066 1148     		ldr	r0, .L10+16
- 215 0068 FFF7FEFF 		bl	ssd1306_WriteString
- 216              	.LVL16:
-  68:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
- 217              		.loc 1 68 3 view .LVU45
-  68:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
- 218              		.loc 1 68 31 is_stmt 0 view .LVU46
- 219 006c 05F10803 		add	r3, r5, #8
- 220 0070 0DEB0305 		add	r5, sp, r3
-  68:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
- 221              		.loc 1 68 3 view .LVU47
- 222 0074 0123     		movs	r3, #1
- 223 0076 94E80600 		ldm	r4, {r1, r2}
- 224 007a 15F8080C 		ldrb	r0, [r5, #-8]	@ zero_extendqisi2
- 225 007e FFF7FEFF 		bl	ssd1306_WriteChar
- 226              	.LVL17:
-  69:Drivers/usb_send/usb_send.c **** 
- 227              		.loc 1 69 3 is_stmt 1 view .LVU48
- 228 0082 FFF7FEFF 		bl	ssd1306_UpdateScreen
- 229              	.LVL18:
-  71:Drivers/usb_send/usb_send.c ****   ssd1306_Fill(Black);
- 230              		.loc 1 71 3 view .LVU49
- 231 0086 4FF4C870 		mov	r0, #400
- 232 008a FFF7FEFF 		bl	vTaskDelay
- 233              	.LVL19:
-  72:Drivers/usb_send/usb_send.c ****   ssd1306_UpdateScreen();
- 234              		.loc 1 72 3 view .LVU50
-ARM GAS  /tmp/cco3LQAv.s 			page 9
-
-
- 235 008e 0020     		movs	r0, #0
- 236 0090 FFF7FEFF 		bl	ssd1306_Fill
- 237              	.LVL20:
-  73:Drivers/usb_send/usb_send.c **** }
- 238              		.loc 1 73 3 view .LVU51
- 239 0094 FFF7FEFF 		bl	ssd1306_UpdateScreen
- 240              	.LVL21:
-  74:Drivers/usb_send/usb_send.c **** 
- 241              		.loc 1 74 1 is_stmt 0 view .LVU52
- 242 0098 03B0     		add	sp, sp, #12
- 243              	.LCFI3:
- 244              		.cfi_def_cfa_offset 20
- 245              		@ sp needed
- 246 009a F0BD     		pop	{r4, r5, r6, r7, pc}
- 247              	.L11:
- 248              		.align	2
- 249              	.L10:
- 250 009c 14000000 		.word	.LC0
- 251 00a0 00000000 		.word	Font_7x10
- 252 00a4 00000000 		.word	.LC1
- 253 00a8 04000000 		.word	.LC2
- 254 00ac 0C000000 		.word	.LC3
- 255              		.cfi_endproc
- 256              	.LFE72:
- 258              		.section	.text.usb_send,"ax",%progbits
- 259              		.align	1
- 260              		.global	usb_send
- 261              		.syntax unified
- 262              		.thumb
- 263              		.thumb_func
- 265              	usb_send:
- 266              	.LVL22:
- 267              	.LFB73:
-  80:Drivers/usb_send/usb_send.c ****   /* usb_sender_test(keyboarSide, test_keys[column], test_keys[row]); */
- 268              		.loc 1 80 62 is_stmt 1 view -0
- 269              		.cfi_startproc
- 270              		@ args = 0, pretend = 0, frame = 0
- 271              		@ frame_needed = 0, uses_anonymous_args = 0
- 272              		@ link register save eliminated.
-  82:Drivers/usb_send/usb_send.c ****   uint8_t key = 0;
- 273              		.loc 1 82 3 view .LVU54
-  83:Drivers/usb_send/usb_send.c ****   // usb_sender_test(keyboarSide, column, row);
- 274              		.loc 1 83 3 view .LVU55
-  85:Drivers/usb_send/usb_send.c ****     if (isFunctionPressed == 0)
- 275              		.loc 1 85 3 view .LVU56
-  85:Drivers/usb_send/usb_send.c ****     if (isFunctionPressed == 0)
- 276              		.loc 1 85 6 is_stmt 0 view .LVU57
- 277 0000 6C28     		cmp	r0, #108
- 278 0002 24D0     		beq	.L31
- 100:Drivers/usb_send/usb_send.c ****     if (isFunctionPressed == 0)
- 279              		.loc 1 100 10 is_stmt 1 view .LVU58
- 100:Drivers/usb_send/usb_send.c ****     if (isFunctionPressed == 0)
- 280              		.loc 1 100 13 is_stmt 0 view .LVU59
- 281 0004 7228     		cmp	r0, #114
- 282 0006 44D0     		beq	.L32
-  83:Drivers/usb_send/usb_send.c ****   // usb_sender_test(keyboarSide, column, row);
- 283              		.loc 1 83 11 view .LVU60
-ARM GAS  /tmp/cco3LQAv.s 			page 10
-
-
- 284 0008 0023     		movs	r3, #0
- 285              	.LVL23:
- 286              	.L16:
- 116:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
- 287              		.loc 1 116 3 is_stmt 1 view .LVU61
- 116:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
- 288              		.loc 1 116 39 is_stmt 0 view .LVU62
- 289 000a 3A4A     		ldr	r2, .L37
- 290 000c 9278     		ldrb	r2, [r2, #2]	@ zero_extendqisi2
- 116:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
- 291              		.loc 1 116 6 view .LVU63
- 292 000e 9A42     		cmp	r2, r3
- 293 0010 6ED0     		beq	.L28
- 116:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
- 294              		.loc 1 116 85 discriminator 1 view .LVU64
- 295 0012 3849     		ldr	r1, .L37
- 296 0014 C978     		ldrb	r1, [r1, #3]	@ zero_extendqisi2
- 116:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
- 297              		.loc 1 116 50 discriminator 1 view .LVU65
- 298 0016 9942     		cmp	r1, r3
- 299 0018 6AD0     		beq	.L28
- 117:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_5) {
- 300              		.loc 1 117 39 discriminator 2 view .LVU66
- 301 001a 3648     		ldr	r0, .L37
- 302              	.LVL24:
- 117:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_5) {
- 303              		.loc 1 117 39 discriminator 2 view .LVU67
- 304 001c 0079     		ldrb	r0, [r0, #4]	@ zero_extendqisi2
- 116:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_3 || key == keyboard_commands_to_send.keycode_4 ||
- 305              		.loc 1 116 96 discriminator 2 view .LVU68
- 306 001e 9842     		cmp	r0, r3
- 307 0020 66D0     		beq	.L28
-  80:Drivers/usb_send/usb_send.c ****   /* usb_sender_test(keyboarSide, test_keys[column], test_keys[row]); */
- 308              		.loc 1 80 62 view .LVU69
- 309 0022 30B4     		push	{r4, r5}
- 310              	.LCFI4:
- 311              		.cfi_def_cfa_offset 8
- 312              		.cfi_offset 4, -8
- 313              		.cfi_offset 5, -4
- 117:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_5) {
- 314              		.loc 1 117 85 view .LVU70
- 315 0024 334C     		ldr	r4, .L37
- 316 0026 6479     		ldrb	r4, [r4, #5]	@ zero_extendqisi2
- 117:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_5) {
- 317              		.loc 1 117 50 view .LVU71
- 318 0028 9C42     		cmp	r4, r3
- 319 002a 56D0     		beq	.L12
- 118:Drivers/usb_send/usb_send.c ****     return;
- 320              		.loc 1 118 39 discriminator 1 view .LVU72
- 321 002c 314D     		ldr	r5, .L37
- 322 002e AD79     		ldrb	r5, [r5, #6]	@ zero_extendqisi2
- 117:Drivers/usb_send/usb_send.c ****       key == keyboard_commands_to_send.keycode_5) {
- 323              		.loc 1 117 96 discriminator 1 view .LVU73
- 324 0030 9D42     		cmp	r5, r3
- 325 0032 52D0     		beq	.L12
- 123:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_1 = key;
- 326              		.loc 1 123 3 is_stmt 1 view .LVU74
-ARM GAS  /tmp/cco3LQAv.s 			page 11
-
-
- 123:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_1 = key;
- 327              		.loc 1 123 6 is_stmt 0 view .LVU75
- 328 0034 002A     		cmp	r2, #0
- 329 0036 4ED0     		beq	.L33
- 126:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_2 = key;
- 330              		.loc 1 126 10 is_stmt 1 view .LVU76
- 126:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_2 = key;
- 331              		.loc 1 126 13 is_stmt 0 view .LVU77
- 332 0038 0029     		cmp	r1, #0
- 333 003a 50D0     		beq	.L34
- 129:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_3 = key;
- 334              		.loc 1 129 10 is_stmt 1 view .LVU78
- 129:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_3 = key;
- 335              		.loc 1 129 13 is_stmt 0 view .LVU79
- 336 003c 0028     		cmp	r0, #0
- 337 003e 51D0     		beq	.L35
- 132:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_4 = key;
- 338              		.loc 1 132 10 is_stmt 1 view .LVU80
- 132:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_4 = key;
- 339              		.loc 1 132 13 is_stmt 0 view .LVU81
- 340 0040 002C     		cmp	r4, #0
- 341 0042 52D0     		beq	.L36
- 135:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_5 = key;
- 342              		.loc 1 135 10 is_stmt 1 view .LVU82
- 135:Drivers/usb_send/usb_send.c ****     keyboard_commands_to_send.keycode_5 = key;
- 343              		.loc 1 135 13 is_stmt 0 view .LVU83
- 344 0044 002D     		cmp	r5, #0
- 345 0046 48D1     		bne	.L12
- 136:Drivers/usb_send/usb_send.c ****     return;
- 346              		.loc 1 136 5 is_stmt 1 view .LVU84
- 136:Drivers/usb_send/usb_send.c ****     return;
- 347              		.loc 1 136 41 is_stmt 0 view .LVU85
- 348 0048 2A4A     		ldr	r2, .L37
- 349 004a 9371     		strb	r3, [r2, #6]
- 137:Drivers/usb_send/usb_send.c ****   }
- 350              		.loc 1 137 5 is_stmt 1 view .LVU86
- 351 004c 45E0     		b	.L12
- 352              	.LVL25:
- 353              	.L31:
- 354              	.LCFI5:
- 355              		.cfi_def_cfa_offset 0
- 356              		.cfi_restore 4
- 357              		.cfi_restore 5
-  86:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_left[column][row];
- 358              		.loc 1 86 5 view .LVU87
-  86:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_left[column][row];
- 359              		.loc 1 86 27 is_stmt 0 view .LVU88
- 360 004e 2A4B     		ldr	r3, .L37+4
- 361 0050 1B68     		ldr	r3, [r3]
-  86:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_left[column][row];
- 362              		.loc 1 86 8 view .LVU89
- 363 0052 93B9     		cbnz	r3, .L14
-  87:Drivers/usb_send/usb_send.c ****     else
- 364              		.loc 1 87 7 is_stmt 1 view .LVU90
-  87:Drivers/usb_send/usb_send.c ****     else
- 365              		.loc 1 87 11 is_stmt 0 view .LVU91
- 366 0054 01EB4101 		add	r1, r1, r1, lsl #1
-ARM GAS  /tmp/cco3LQAv.s 			page 12
-
-
- 367              	.LVL26:
-  87:Drivers/usb_send/usb_send.c ****     else
- 368              		.loc 1 87 11 view .LVU92
- 369 0058 284B     		ldr	r3, .L37+8
- 370 005a 03EB4103 		add	r3, r3, r1, lsl #1
- 371 005e 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
- 372              	.LVL27:
- 373              	.L15:
-  91:Drivers/usb_send/usb_send.c ****       // Do the bitwise operation to set the modifier key for more info see:
- 374              		.loc 1 91 5 is_stmt 1 view .LVU93
-  91:Drivers/usb_send/usb_send.c ****       // Do the bitwise operation to set the modifier key for more info see:
- 375              		.loc 1 91 8 is_stmt 0 view .LVU94
- 376 0060 E72B     		cmp	r3, #231
- 377 0062 D2D9     		bls	.L16
-  91:Drivers/usb_send/usb_send.c ****       // Do the bitwise operation to set the modifier key for more info see:
- 378              		.loc 1 91 20 discriminator 1 view .LVU95
- 379 0064 F02B     		cmp	r3, #240
- 380 0066 0FD0     		beq	.L17
-  94:Drivers/usb_send/usb_send.c ****       return;
- 381              		.loc 1 94 7 is_stmt 1 view .LVU96
-  94:Drivers/usb_send/usb_send.c ****       return;
- 382              		.loc 1 94 32 is_stmt 0 view .LVU97
- 383 0068 2249     		ldr	r1, .L37
- 384 006a 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
- 385              	.LVL28:
-  94:Drivers/usb_send/usb_send.c ****       return;
- 386              		.loc 1 94 59 view .LVU98
- 387 006c A3F1E800 		sub	r0, r3, #232
- 388              	.LVL29:
-  94:Drivers/usb_send/usb_send.c ****       return;
- 389              		.loc 1 94 51 view .LVU99
- 390 0070 0123     		movs	r3, #1
- 391              	.LVL30:
-  94:Drivers/usb_send/usb_send.c ****       return;
- 392              		.loc 1 94 51 view .LVU100
- 393 0072 8340     		lsls	r3, r3, r0
-  94:Drivers/usb_send/usb_send.c ****       return;
- 394              		.loc 1 94 46 view .LVU101
- 395 0074 1343     		orrs	r3, r3, r2
- 396 0076 0B70     		strb	r3, [r1]
-  95:Drivers/usb_send/usb_send.c ****     } else if (key == 240) {
- 397              		.loc 1 95 7 is_stmt 1 view .LVU102
- 398 0078 7047     		bx	lr
- 399              	.LVL31:
- 400              	.L14:
-  89:Drivers/usb_send/usb_send.c **** 
- 401              		.loc 1 89 7 view .LVU103
-  89:Drivers/usb_send/usb_send.c **** 
- 402              		.loc 1 89 11 is_stmt 0 view .LVU104
- 403 007a 01EB4101 		add	r1, r1, r1, lsl #1
- 404              	.LVL32:
-  89:Drivers/usb_send/usb_send.c **** 
- 405              		.loc 1 89 11 view .LVU105
- 406 007e 204B     		ldr	r3, .L37+12
- 407 0080 03EB4103 		add	r3, r3, r1, lsl #1
- 408 0084 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
- 409              	.LVL33:
-ARM GAS  /tmp/cco3LQAv.s 			page 13
-
-
-  89:Drivers/usb_send/usb_send.c **** 
- 410              		.loc 1 89 11 view .LVU106
- 411 0086 EBE7     		b	.L15
- 412              	.L17:
-  96:Drivers/usb_send/usb_send.c ****       isFunctionPressed = 1;
- 413              		.loc 1 96 12 is_stmt 1 view .LVU107
-  97:Drivers/usb_send/usb_send.c ****       key = 0;
- 414              		.loc 1 97 7 view .LVU108
-  97:Drivers/usb_send/usb_send.c ****       key = 0;
- 415              		.loc 1 97 25 is_stmt 0 view .LVU109
- 416 0088 1B4B     		ldr	r3, .L37+4
- 417              	.LVL34:
-  97:Drivers/usb_send/usb_send.c ****       key = 0;
- 418              		.loc 1 97 25 view .LVU110
- 419 008a 0122     		movs	r2, #1
- 420              	.LVL35:
-  97:Drivers/usb_send/usb_send.c ****       key = 0;
- 421              		.loc 1 97 25 view .LVU111
- 422 008c 1A60     		str	r2, [r3]
-  98:Drivers/usb_send/usb_send.c ****     }
- 423              		.loc 1 98 7 is_stmt 1 view .LVU112
- 424              	.LVL36:
-  98:Drivers/usb_send/usb_send.c ****     }
- 425              		.loc 1 98 11 is_stmt 0 view .LVU113
- 426 008e 0023     		movs	r3, #0
- 427 0090 BBE7     		b	.L16
- 428              	.LVL37:
- 429              	.L32:
- 101:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right[column][row];
- 430              		.loc 1 101 5 is_stmt 1 view .LVU114
- 101:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right[column][row];
- 431              		.loc 1 101 27 is_stmt 0 view .LVU115
- 432 0092 194B     		ldr	r3, .L37+4
- 433 0094 1B68     		ldr	r3, [r3]
- 101:Drivers/usb_send/usb_send.c ****       key = keyboard_keys_right[column][row];
- 434              		.loc 1 101 8 view .LVU116
- 435 0096 93B9     		cbnz	r3, .L19
- 102:Drivers/usb_send/usb_send.c ****     else
- 436              		.loc 1 102 7 is_stmt 1 view .LVU117
- 102:Drivers/usb_send/usb_send.c ****     else
- 437              		.loc 1 102 11 is_stmt 0 view .LVU118
- 438 0098 01EB4101 		add	r1, r1, r1, lsl #1
- 439              	.LVL38:
- 102:Drivers/usb_send/usb_send.c ****     else
- 440              		.loc 1 102 11 view .LVU119
- 441 009c 194B     		ldr	r3, .L37+16
- 442 009e 03EB4103 		add	r3, r3, r1, lsl #1
- 443 00a2 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
- 444              	.LVL39:
- 445              	.L20:
- 106:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
- 446              		.loc 1 106 5 is_stmt 1 view .LVU120
- 106:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
- 447              		.loc 1 106 8 is_stmt 0 view .LVU121
- 448 00a4 E72B     		cmp	r3, #231
- 449 00a6 B0D9     		bls	.L16
- 106:Drivers/usb_send/usb_send.c ****       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
-ARM GAS  /tmp/cco3LQAv.s 			page 14
-
-
- 450              		.loc 1 106 20 discriminator 1 view .LVU122
- 451 00a8 F02B     		cmp	r3, #240
- 452 00aa 0FD0     		beq	.L21
- 107:Drivers/usb_send/usb_send.c ****       return;
- 453              		.loc 1 107 7 is_stmt 1 view .LVU123
- 107:Drivers/usb_send/usb_send.c ****       return;
- 454              		.loc 1 107 32 is_stmt 0 view .LVU124
- 455 00ac 1149     		ldr	r1, .L37
- 456 00ae 0A78     		ldrb	r2, [r1]	@ zero_extendqisi2
- 457              	.LVL40:
- 107:Drivers/usb_send/usb_send.c ****       return;
- 458              		.loc 1 107 59 view .LVU125
- 459 00b0 A3F1E800 		sub	r0, r3, #232
- 460              	.LVL41:
- 107:Drivers/usb_send/usb_send.c ****       return;
- 461              		.loc 1 107 51 view .LVU126
- 462 00b4 0123     		movs	r3, #1
- 463              	.LVL42:
- 107:Drivers/usb_send/usb_send.c ****       return;
- 464              		.loc 1 107 51 view .LVU127
- 465 00b6 8340     		lsls	r3, r3, r0
- 107:Drivers/usb_send/usb_send.c ****       return;
- 466              		.loc 1 107 46 view .LVU128
- 467 00b8 1343     		orrs	r3, r3, r2
- 468 00ba 0B70     		strb	r3, [r1]
- 108:Drivers/usb_send/usb_send.c ****     } else if (key == 240) {
- 469              		.loc 1 108 7 is_stmt 1 view .LVU129
- 470 00bc 7047     		bx	lr
- 471              	.LVL43:
- 472              	.L19:
- 104:Drivers/usb_send/usb_send.c **** 
- 473              		.loc 1 104 7 view .LVU130
- 104:Drivers/usb_send/usb_send.c **** 
- 474              		.loc 1 104 11 is_stmt 0 view .LVU131
- 475 00be 01EB4101 		add	r1, r1, r1, lsl #1
- 476              	.LVL44:
- 104:Drivers/usb_send/usb_send.c **** 
- 477              		.loc 1 104 11 view .LVU132
- 478 00c2 114B     		ldr	r3, .L37+20
- 479 00c4 03EB4103 		add	r3, r3, r1, lsl #1
- 480 00c8 9B5C     		ldrb	r3, [r3, r2]	@ zero_extendqisi2
- 481              	.LVL45:
- 104:Drivers/usb_send/usb_send.c **** 
- 482              		.loc 1 104 11 view .LVU133
- 483 00ca EBE7     		b	.L20
- 484              	.L21:
- 109:Drivers/usb_send/usb_send.c ****       isFunctionPressed = 1;
- 485              		.loc 1 109 12 is_stmt 1 view .LVU134
- 110:Drivers/usb_send/usb_send.c ****       key = 0;
- 486              		.loc 1 110 7 view .LVU135
- 110:Drivers/usb_send/usb_send.c ****       key = 0;
- 487              		.loc 1 110 25 is_stmt 0 view .LVU136
- 488 00cc 0A4B     		ldr	r3, .L37+4
- 489              	.LVL46:
- 110:Drivers/usb_send/usb_send.c ****       key = 0;
- 490              		.loc 1 110 25 view .LVU137
- 491 00ce 0122     		movs	r2, #1
-ARM GAS  /tmp/cco3LQAv.s 			page 15
-
-
- 492              	.LVL47:
- 110:Drivers/usb_send/usb_send.c ****       key = 0;
- 493              		.loc 1 110 25 view .LVU138
- 494 00d0 1A60     		str	r2, [r3]
- 111:Drivers/usb_send/usb_send.c ****     }
- 495              		.loc 1 111 7 is_stmt 1 view .LVU139
- 496              	.LVL48:
- 111:Drivers/usb_send/usb_send.c ****     }
- 497              		.loc 1 111 11 is_stmt 0 view .LVU140
- 498 00d2 0023     		movs	r3, #0
- 499 00d4 99E7     		b	.L16
- 500              	.LVL49:
- 501              	.L33:
- 502              	.LCFI6:
- 503              		.cfi_def_cfa_offset 8
- 504              		.cfi_offset 4, -8
- 505              		.cfi_offset 5, -4
- 124:Drivers/usb_send/usb_send.c ****     return;
- 506              		.loc 1 124 5 is_stmt 1 view .LVU141
- 124:Drivers/usb_send/usb_send.c ****     return;
- 507              		.loc 1 124 41 is_stmt 0 view .LVU142
- 508 00d6 074A     		ldr	r2, .L37
- 509 00d8 9370     		strb	r3, [r2, #2]
- 125:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_2 && key != keyboard_commands_to_send.keycode_2) {
- 510              		.loc 1 125 5 is_stmt 1 view .LVU143
- 511              	.L12:
- 140:Drivers/usb_send/usb_send.c **** 
- 512              		.loc 1 140 1 is_stmt 0 view .LVU144
- 513 00da 30BC     		pop	{r4, r5}
- 514              	.LCFI7:
- 515              		.cfi_remember_state
- 516              		.cfi_restore 5
- 517              		.cfi_restore 4
- 518              		.cfi_def_cfa_offset 0
- 519 00dc 7047     		bx	lr
- 520              	.L34:
- 521              	.LCFI8:
- 522              		.cfi_restore_state
- 127:Drivers/usb_send/usb_send.c ****     return;
- 523              		.loc 1 127 5 is_stmt 1 view .LVU145
- 127:Drivers/usb_send/usb_send.c ****     return;
- 524              		.loc 1 127 41 is_stmt 0 view .LVU146
- 525 00de 054A     		ldr	r2, .L37
- 526 00e0 D370     		strb	r3, [r2, #3]
- 128:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_3) {
- 527              		.loc 1 128 5 is_stmt 1 view .LVU147
- 528 00e2 FAE7     		b	.L12
- 529              	.L35:
- 130:Drivers/usb_send/usb_send.c ****     return;
- 530              		.loc 1 130 5 view .LVU148
- 130:Drivers/usb_send/usb_send.c ****     return;
- 531              		.loc 1 130 41 is_stmt 0 view .LVU149
- 532 00e4 034A     		ldr	r2, .L37
- 533 00e6 1371     		strb	r3, [r2, #4]
- 131:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_4) {
- 534              		.loc 1 131 5 is_stmt 1 view .LVU150
- 535 00e8 F7E7     		b	.L12
-ARM GAS  /tmp/cco3LQAv.s 			page 16
-
-
- 536              	.L36:
- 133:Drivers/usb_send/usb_send.c ****     return;
- 537              		.loc 1 133 5 view .LVU151
- 133:Drivers/usb_send/usb_send.c ****     return;
- 538              		.loc 1 133 41 is_stmt 0 view .LVU152
- 539 00ea 024A     		ldr	r2, .L37
- 540 00ec 5371     		strb	r3, [r2, #5]
- 134:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_5) {
- 541              		.loc 1 134 5 is_stmt 1 view .LVU153
- 542 00ee F4E7     		b	.L12
- 543              	.L28:
- 544              	.LCFI9:
- 545              		.cfi_def_cfa_offset 0
- 546              		.cfi_restore 4
- 547              		.cfi_restore 5
- 134:Drivers/usb_send/usb_send.c ****   } else if (!keyboard_commands_to_send.keycode_5) {
- 548              		.loc 1 134 5 is_stmt 0 view .LVU154
- 549 00f0 7047     		bx	lr
- 550              	.L38:
- 551 00f2 00BF     		.align	2
- 552              	.L37:
- 553 00f4 00000000 		.word	keyboard_commands_to_send
- 554 00f8 00000000 		.word	isFunctionPressed
- 555 00fc 00000000 		.word	keyboard_keys_left
- 556 0100 00000000 		.word	keyboard_keys_left_spc
- 557 0104 00000000 		.word	keyboard_keys_right
- 558 0108 00000000 		.word	keyboard_keys_right_spc
- 559              		.cfi_endproc
- 560              	.LFE73:
- 562              		.section	.rodata.usb_send_task_init.str1.4,"aMS",%progbits,1
- 563              		.align	2
- 564              	.LC4:
- 565 0000 7573625F 		.ascii	"usb_send_task\000"
- 565      73656E64 
- 565      5F746173 
- 565      6B00
- 566              		.section	.text.usb_send_task_init,"ax",%progbits
- 567              		.align	1
- 568              		.global	usb_send_task_init
- 569              		.syntax unified
- 570              		.thumb
- 571              		.thumb_func
- 573              	usb_send_task_init:
- 574              	.LFB75:
- 195:Drivers/usb_send/usb_send.c ****   }
- 196:Drivers/usb_send/usb_send.c **** }
+ 175:Drivers/usb_send/usb_send.c ****   extern keyboard_command_t keyboard_commands_to_send;
+ 176:Drivers/usb_send/usb_send.c ****   static keyboard_command_t previous_comand;
+ 177:Drivers/usb_send/usb_send.c ****   uint8_t repeatKey = 0;
+ 178:Drivers/usb_send/usb_send.c ****   uint8_t prevKey = 0;
+ 179:Drivers/usb_send/usb_send.c ****   uint8_t jump = 0;
+ 180:Drivers/usb_send/usb_send.c **** 
+ 181:Drivers/usb_send/usb_send.c ****   while (1) {
+ 182:Drivers/usb_send/usb_send.c ****     // Send the command if a key was pressed
+ 183:Drivers/usb_send/usb_send.c ****     if (keyboard_commands_to_send.keycode_1 ||
+ 184:Drivers/usb_send/usb_send.c ****         keyboard_commands_to_send.modifier_key) {
+ 185:Drivers/usb_send/usb_send.c **** 
+ 186:Drivers/usb_send/usb_send.c ****       prevKey = keyboard_commands_to_send.keycode_1;
+ 514              		.loc 1 186 7 is_stmt 1 view .LVU142
+ 187:Drivers/usb_send/usb_send.c ****       USBD_HID_SendReport(&hUsbDeviceFS, &keyboard_commands_to_send,
+ 515              		.loc 1 187 7 view .LVU143
+ 516 0004 104C     		ldr	r4, .L36
+ 517              	.LVL49:
+ 518              		.loc 1 187 7 is_stmt 0 view .LVU144
+ 519 0006 114D     		ldr	r5, .L36+4
+ 520 0008 0822     		movs	r2, #8
+ 521 000a 2146     		mov	r1, r4
+ 522 000c 2846     		mov	r0, r5
+ 523 000e FFF7FEFF 		bl	USBD_HID_SendReport
+ 524              	.LVL50:
+ 188:Drivers/usb_send/usb_send.c ****                           sizeof(keyboard_command_t));
+ 189:Drivers/usb_send/usb_send.c **** 
+ 190:Drivers/usb_send/usb_send.c ****       usb_send_clear_keyboard_command(&keyboard_commands_to_send);
+ 525              		.loc 1 190 7 is_stmt 1 view .LVU145
+ 526 0012 2046     		mov	r0, r4
+ 527 0014 FFF7FEFF 		bl	usb_send_clear_keyboard_command
+ 528              	.LVL51:
+ 191:Drivers/usb_send/usb_send.c ****       vTaskDelay(0100 / portTICK_PERIOD_MS);
+ 529              		.loc 1 191 7 view .LVU146
+ 530 0018 4020     		movs	r0, #64
+ 531 001a FFF7FEFF 		bl	vTaskDelay
+ 532              	.LVL52:
+ 192:Drivers/usb_send/usb_send.c **** 
+ 193:Drivers/usb_send/usb_send.c ****       /* while (prevKey == keyboard_commands_to_send.keycode_1) { */
+ 194:Drivers/usb_send/usb_send.c ****       /* } */
+ 195:Drivers/usb_send/usb_send.c ****       // Reset the keyboard commands
+ 196:Drivers/usb_send/usb_send.c ****       /* usb_send_clear_keyboard_command(&keyboard_commands_to_send); */
  197:Drivers/usb_send/usb_send.c **** 
- 198:Drivers/usb_send/usb_send.c **** void usb_send_task_init() {
- 575              		.loc 1 198 27 is_stmt 1 view -0
- 576              		.cfi_startproc
- 577              		@ args = 0, pretend = 0, frame = 0
- 578              		@ frame_needed = 0, uses_anonymous_args = 0
- 579 0000 00B5     		push	{lr}
- 580              	.LCFI10:
- 581              		.cfi_def_cfa_offset 4
- 582              		.cfi_offset 14, -4
- 583 0002 83B0     		sub	sp, sp, #12
-ARM GAS  /tmp/cco3LQAv.s 			page 17
+ARM GAS  /tmp/ccBVnRhY.s 			page 15
 
 
- 584              	.LCFI11:
- 585              		.cfi_def_cfa_offset 16
- 199:Drivers/usb_send/usb_send.c ****   xTaskCreate(&usb_send_task, "usb_send_task", USB_SEND_STACK_SIZE, NULL,
- 586              		.loc 1 199 3 view .LVU156
- 587 0004 0023     		movs	r3, #0
- 588 0006 0193     		str	r3, [sp, #4]
- 589 0008 0A22     		movs	r2, #10
- 590 000a 0092     		str	r2, [sp]
- 591 000c 6422     		movs	r2, #100
- 592 000e 0349     		ldr	r1, .L41
- 593 0010 0348     		ldr	r0, .L41+4
- 594 0012 FFF7FEFF 		bl	xTaskCreate
- 595              	.LVL50:
- 200:Drivers/usb_send/usb_send.c ****               USB_SEND_PRIORITY, NULL);
- 201:Drivers/usb_send/usb_send.c **** }
- 596              		.loc 1 201 1 is_stmt 0 view .LVU157
- 597 0016 03B0     		add	sp, sp, #12
- 598              	.LCFI12:
- 599              		.cfi_def_cfa_offset 4
- 600              		@ sp needed
- 601 0018 5DF804FB 		ldr	pc, [sp], #4
- 602              	.L42:
- 603              		.align	2
- 604              	.L41:
- 605 001c 00000000 		.word	.LC4
- 606 0020 00000000 		.word	usb_send_task
- 607              		.cfi_endproc
- 608              	.LFE75:
- 610              		.global	keyboard_keys_right_spc
- 611              		.section	.rodata.keyboard_keys_right_spc,"a"
- 612              		.align	2
- 615              	keyboard_keys_right_spc:
- 616 0000 3F404142 		.ascii	"?@ABCD"
- 616      4344
- 617 0006 0D2F2D2E 		.ascii	"\015/-.0E"
- 617      3045
- 618 000c 4A505152 		.ascii	"JPQROM"
- 618      4F4D
- 619 0012 0E0B4E4B 		.ascii	"\016\013NK85"
- 619      3835
- 620 0018 2CE9E8EA 		.ascii	",\351\350\352\353\360"
- 620      EBF0
- 621              		.global	keyboard_keys_left_spc
- 622              		.section	.rodata.keyboard_keys_left_spc,"a"
+ 198:Drivers/usb_send/usb_send.c ****       USBD_HID_SendReport(&hUsbDeviceFS, &keyboard_commands_to_send,
+ 533              		.loc 1 198 7 view .LVU147
+ 534 001e 0822     		movs	r2, #8
+ 535 0020 2146     		mov	r1, r4
+ 536 0022 2846     		mov	r0, r5
+ 537 0024 FFF7FEFF 		bl	USBD_HID_SendReport
+ 538              	.LVL53:
+ 199:Drivers/usb_send/usb_send.c ****                           sizeof(keyboard_command_t));
+ 200:Drivers/usb_send/usb_send.c ****       vTaskDelay(10 / portTICK_PERIOD_MS);
+ 539              		.loc 1 200 7 view .LVU148
+ 540 0028 0A20     		movs	r0, #10
+ 541 002a FFF7FEFF 		bl	vTaskDelay
+ 542              	.LVL54:
+ 543              	.L33:
+ 201:Drivers/usb_send/usb_send.c ****       /* vTaskDelay(200 / portTICK_PERIOD_MS); */
+ 202:Drivers/usb_send/usb_send.c ****       /* ssd1306_Fill(Black); */
+ 203:Drivers/usb_send/usb_send.c ****       /* ssd1306_UpdateScreen(); */
+ 204:Drivers/usb_send/usb_send.c ****     } else {
+ 205:Drivers/usb_send/usb_send.c ****       repeatKey = 0;
+ 206:Drivers/usb_send/usb_send.c ****     }
+ 207:Drivers/usb_send/usb_send.c ****     vTaskDelay(10 / portTICK_PERIOD_MS);
+ 544              		.loc 1 207 5 view .LVU149
+ 545 002e 0A20     		movs	r0, #10
+ 546 0030 FFF7FEFF 		bl	vTaskDelay
+ 547              	.LVL55:
+ 181:Drivers/usb_send/usb_send.c ****     // Send the command if a key was pressed
+ 548              		.loc 1 181 9 view .LVU150
+ 549              	.L34:
+ 181:Drivers/usb_send/usb_send.c ****     // Send the command if a key was pressed
+ 550              		.loc 1 181 3 view .LVU151
+ 183:Drivers/usb_send/usb_send.c ****         keyboard_commands_to_send.modifier_key) {
+ 551              		.loc 1 183 5 view .LVU152
+ 183:Drivers/usb_send/usb_send.c ****         keyboard_commands_to_send.modifier_key) {
+ 552              		.loc 1 183 34 is_stmt 0 view .LVU153
+ 553 0034 044B     		ldr	r3, .L36
+ 554 0036 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 183:Drivers/usb_send/usb_send.c ****         keyboard_commands_to_send.modifier_key) {
+ 555              		.loc 1 183 8 view .LVU154
+ 556 0038 002B     		cmp	r3, #0
+ 557 003a E3D1     		bne	.L32
+ 184:Drivers/usb_send/usb_send.c **** 
+ 558              		.loc 1 184 34 discriminator 1 view .LVU155
+ 559 003c 024B     		ldr	r3, .L36
+ 560 003e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 183:Drivers/usb_send/usb_send.c ****         keyboard_commands_to_send.modifier_key) {
+ 561              		.loc 1 183 45 discriminator 1 view .LVU156
+ 562 0040 002B     		cmp	r3, #0
+ 563 0042 F4D0     		beq	.L33
+ 564 0044 DEE7     		b	.L32
+ 565              	.L37:
+ 566 0046 00BF     		.align	2
+ 567              	.L36:
+ 568 0048 00000000 		.word	keyboard_commands_to_send
+ 569 004c 00000000 		.word	hUsbDeviceFS
+ 570              		.cfi_endproc
+ 571              	.LFE75:
+ 573              		.section	.rodata.usb_send_task_init.str1.4,"aMS",%progbits,1
+ARM GAS  /tmp/ccBVnRhY.s 			page 16
+
+
+ 574              		.align	2
+ 575              	.LC4:
+ 576 0000 7573625F 		.ascii	"usb_send_task\000"
+ 576      73656E64 
+ 576      5F746173 
+ 576      6B00
+ 577              		.section	.text.usb_send_task_init,"ax",%progbits
+ 578              		.align	1
+ 579              		.global	usb_send_task_init
+ 580              		.syntax unified
+ 581              		.thumb
+ 582              		.thumb_func
+ 584              	usb_send_task_init:
+ 585              	.LFB76:
+ 208:Drivers/usb_send/usb_send.c ****   }
+ 209:Drivers/usb_send/usb_send.c ****   isFunctionPressed = 0;
+ 210:Drivers/usb_send/usb_send.c **** }
+ 211:Drivers/usb_send/usb_send.c **** 
+ 212:Drivers/usb_send/usb_send.c **** void usb_send_task_init() {
+ 586              		.loc 1 212 27 is_stmt 1 view -0
+ 587              		.cfi_startproc
+ 588              		@ args = 0, pretend = 0, frame = 0
+ 589              		@ frame_needed = 0, uses_anonymous_args = 0
+ 590 0000 00B5     		push	{lr}
+ 591              	.LCFI6:
+ 592              		.cfi_def_cfa_offset 4
+ 593              		.cfi_offset 14, -4
+ 594 0002 83B0     		sub	sp, sp, #12
+ 595              	.LCFI7:
+ 596              		.cfi_def_cfa_offset 16
+ 213:Drivers/usb_send/usb_send.c ****   xTaskCreate(&usb_send_task, "usb_send_task", USB_SEND_STACK_SIZE, NULL,
+ 597              		.loc 1 213 3 view .LVU158
+ 598 0004 0023     		movs	r3, #0
+ 599 0006 0193     		str	r3, [sp, #4]
+ 600 0008 0A22     		movs	r2, #10
+ 601 000a 0092     		str	r2, [sp]
+ 602 000c 6422     		movs	r2, #100
+ 603 000e 0349     		ldr	r1, .L40
+ 604 0010 0348     		ldr	r0, .L40+4
+ 605 0012 FFF7FEFF 		bl	xTaskCreate
+ 606              	.LVL56:
+ 214:Drivers/usb_send/usb_send.c ****               USB_SEND_PRIORITY, NULL);
+ 215:Drivers/usb_send/usb_send.c **** }
+ 607              		.loc 1 215 1 is_stmt 0 view .LVU159
+ 608 0016 03B0     		add	sp, sp, #12
+ 609              	.LCFI8:
+ 610              		.cfi_def_cfa_offset 4
+ 611              		@ sp needed
+ 612 0018 5DF804FB 		ldr	pc, [sp], #4
+ 613              	.L41:
+ 614              		.align	2
+ 615              	.L40:
+ 616 001c 00000000 		.word	.LC4
+ 617 0020 00000000 		.word	usb_send_task
+ 618              		.cfi_endproc
+ 619              	.LFE76:
+ 621              		.global	keyboard_keys_right_spc
+ARM GAS  /tmp/ccBVnRhY.s 			page 17
+
+
+ 622              		.section	.rodata.keyboard_keys_right_spc,"a"
  623              		.align	2
- 626              	keyboard_keys_left_spc:
- 627 0000 293A3B3C 		.ascii	"):;<=>"
- 627      3D3E
- 628 0006 2B141A09 		.ascii	"+\024\032\011\023\005"
- 628      1305
- 629 000c 39041516 		.ascii	"9\004\025\026\027\012"
- 629      170A
- 630 0012 311D1B06 		.ascii	"1\035\033\006\007\031"
- 630      0719
- 631 0018 F0EFEEEC 		.ascii	"\360\357\356\354\355,"
- 631      ED2C
- 632              		.global	keyboard_keys_right
-ARM GAS  /tmp/cco3LQAv.s 			page 18
-
-
- 633              		.section	.rodata.keyboard_keys_right,"a"
+ 626              	keyboard_keys_right_spc:
+ 627 0000 3F404142 		.ascii	"?@ABCD"
+ 627      4344
+ 628 0006 2F302D2E 		.ascii	"/0-.1E"
+ 628      3145
+ 629 000c 4A505152 		.ascii	"JPQROM"
+ 629      4F4D
+ 630 0012 0E0B4E4B 		.ascii	"\016\013NK35"
+ 630      3335
+ 631 0018 2CEDEFEE 		.ascii	",\355\357\356\354\360"
+ 631      ECF0
+ 632              		.global	keyboard_keys_left_spc
+ 633              		.section	.rodata.keyboard_keys_left_spc,"a"
  634              		.align	2
- 637              	keyboard_keys_right:
- 638 0000 23242526 		.ascii	"#$%&'*"
- 638      272A
- 639 0006 0D0F181C 		.ascii	"\015\017\030\0343("
- 639      3328
- 640 000c 1011080C 		.ascii	"\020\021\010\014\022L"
- 640      124C
- 641 0012 0E0B3637 		.ascii	"\016\0136785"
- 641      3835
- 642 0018 2CE9E8EA 		.ascii	",\351\350\352\353\360"
- 642      EBF0
- 643              		.global	keyboard_keys_left
- 644              		.section	.rodata.keyboard_keys_left,"a"
+ 637              	keyboard_keys_left_spc:
+ 638 0000 293A3B3C 		.ascii	"):;<=>"
+ 638      3D3E
+ 639 0006 2B141A09 		.ascii	"+\024\032\011\023\005"
+ 639      1305
+ 640 000c 39041516 		.ascii	"9\004\025\026\027\012"
+ 640      170A
+ 641 0012 641D1B06 		.ascii	"d\035\033\006\007\031"
+ 641      0719
+ 642 0018 F0E8EAEB 		.ascii	"\360\350\352\353\351,"
+ 642      E92C
+ 643              		.global	keyboard_keys_right
+ 644              		.section	.rodata.keyboard_keys_right,"a"
  645              		.align	2
- 648              	keyboard_keys_left:
- 649 0000 341E1F20 		.ascii	"4\036\037 !\""
- 649      2122
- 650 0006 2B141A09 		.ascii	"+\024\032\011\023\005"
- 650      1305
- 651 000c 39041516 		.ascii	"9\004\025\026\027\012"
- 651      170A
- 652 0012 311D1B06 		.ascii	"1\035\033\006\007\031"
- 652      0719
- 653 0018 F0EFEEEC 		.ascii	"\360\357\356\354\355,"
- 653      ED2C
- 654              		.global	isFunctionPressed
- 655              		.section	.bss.isFunctionPressed,"aw",%nobits
+ 648              	keyboard_keys_right:
+ 649 0000 23242526 		.ascii	"#$%&'*"
+ 649      272A
+ 650 0006 0D0F181C 		.ascii	"\015\017\030\0348("
+ 650      3828
+ 651 000c 1011080C 		.ascii	"\020\021\010\014\022L"
+ 651      124C
+ 652 0012 0E0B3637 		.ascii	"\016\0136735"
+ 652      3335
+ 653 0018 2CEDEFEE 		.ascii	",\355\357\356\354\360"
+ 653      ECF0
+ 654              		.global	keyboard_keys_left
+ 655              		.section	.rodata.keyboard_keys_left,"a"
  656              		.align	2
- 659              	isFunctionPressed:
- 660 0000 00000000 		.space	4
- 661              		.text
- 662              	.Letext0:
- 663              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
- 664              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
- 665              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
- 666              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/portmacro.h"
- 667              		.file 6 "Drivers/usb_send/usb_send.h"
- 668              		.file 7 "Drivers/ssd1306/ssd1306_fonts.h"
- 669              		.file 8 "Drivers/ssd1306/ssd1306.h"
- 670              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
- 671              		.file 10 "Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h"
- 672              		.file 11 "Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc/usbd_hid.h"
-ARM GAS  /tmp/cco3LQAv.s 			page 19
+ 659              	keyboard_keys_left:
+ 660 0000 351E1F20 		.ascii	"5\036\037 !\""
+ 660      2122
+ 661 0006 2B141A09 		.ascii	"+\024\032\011\023\005"
+ 661      1305
+ 662 000c 39041516 		.ascii	"9\004\025\026\027\012"
+ 662      170A
+ 663 0012 641D1B06 		.ascii	"d\035\033\006\007\031"
+ 663      0719
+ 664 0018 F0E8EAEB 		.ascii	"\360\350\352\353\351,"
+ 664      E92C
+ 665              		.global	isFunctionPressed
+ 666              		.section	.bss.isFunctionPressed,"aw",%nobits
+ARM GAS  /tmp/ccBVnRhY.s 			page 18
+
+
+ 667              		.align	2
+ 670              	isFunctionPressed:
+ 671 0000 00000000 		.space	4
+ 672              		.text
+ 673              	.Letext0:
+ 674              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 675              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 676              		.file 4 "Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h"
+ 677              		.file 5 "Middlewares/Third_Party/FreeRTOS/Source/portable/GCC/ARM_CM3/portmacro.h"
+ 678              		.file 6 "Drivers/usb_send/usb_send.h"
+ 679              		.file 7 "Drivers/ssd1306/ssd1306_fonts.h"
+ 680              		.file 8 "Drivers/ssd1306/ssd1306.h"
+ 681              		.file 9 "Middlewares/Third_Party/FreeRTOS/Source/include/task.h"
+ 682              		.file 10 "Middlewares/ST/STM32_USB_Device_Library/Core/Inc/usbd_def.h"
+ 683              		.file 11 "Middlewares/ST/STM32_USB_Device_Library/Class/HID/Inc/usbd_hid.h"
+ARM GAS  /tmp/ccBVnRhY.s 			page 19
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 usb_send.c
-     /tmp/cco3LQAv.s:19     .text.usb_send_task:0000000000000000 $t
-     /tmp/cco3LQAv.s:25     .text.usb_send_task:0000000000000000 usb_send_task
-     /tmp/cco3LQAv.s:117    .text.usb_send_task:0000000000000054 $d
-     /tmp/cco3LQAv.s:659    .bss.isFunctionPressed:0000000000000000 isFunctionPressed
-     /tmp/cco3LQAv.s:124    .rodata.usb_sender_test.str1.4:0000000000000000 $d
-     /tmp/cco3LQAv.s:137    .text.usb_sender_test:0000000000000000 $t
-     /tmp/cco3LQAv.s:143    .text.usb_sender_test:0000000000000000 usb_sender_test
-     /tmp/cco3LQAv.s:250    .text.usb_sender_test:000000000000009c $d
-     /tmp/cco3LQAv.s:259    .text.usb_send:0000000000000000 $t
-     /tmp/cco3LQAv.s:265    .text.usb_send:0000000000000000 usb_send
-     /tmp/cco3LQAv.s:553    .text.usb_send:00000000000000f4 $d
-     /tmp/cco3LQAv.s:648    .rodata.keyboard_keys_left:0000000000000000 keyboard_keys_left
-     /tmp/cco3LQAv.s:626    .rodata.keyboard_keys_left_spc:0000000000000000 keyboard_keys_left_spc
-     /tmp/cco3LQAv.s:637    .rodata.keyboard_keys_right:0000000000000000 keyboard_keys_right
-     /tmp/cco3LQAv.s:615    .rodata.keyboard_keys_right_spc:0000000000000000 keyboard_keys_right_spc
-     /tmp/cco3LQAv.s:563    .rodata.usb_send_task_init.str1.4:0000000000000000 $d
-     /tmp/cco3LQAv.s:567    .text.usb_send_task_init:0000000000000000 $t
-     /tmp/cco3LQAv.s:573    .text.usb_send_task_init:0000000000000000 usb_send_task_init
-     /tmp/cco3LQAv.s:605    .text.usb_send_task_init:000000000000001c $d
-     /tmp/cco3LQAv.s:612    .rodata.keyboard_keys_right_spc:0000000000000000 $d
-     /tmp/cco3LQAv.s:623    .rodata.keyboard_keys_left_spc:0000000000000000 $d
-     /tmp/cco3LQAv.s:634    .rodata.keyboard_keys_right:0000000000000000 $d
-     /tmp/cco3LQAv.s:645    .rodata.keyboard_keys_left:0000000000000000 $d
-     /tmp/cco3LQAv.s:656    .bss.isFunctionPressed:0000000000000000 $d
+     /tmp/ccBVnRhY.s:19     .rodata.usb_sender_test.str1.4:0000000000000000 $d
+     /tmp/ccBVnRhY.s:32     .text.usb_sender_test:0000000000000000 $t
+     /tmp/ccBVnRhY.s:38     .text.usb_sender_test:0000000000000000 usb_sender_test
+     /tmp/ccBVnRhY.s:145    .text.usb_sender_test:000000000000009c $d
+     /tmp/ccBVnRhY.s:154    .text.usb_send:0000000000000000 $t
+     /tmp/ccBVnRhY.s:160    .text.usb_send:0000000000000000 usb_send
+     /tmp/ccBVnRhY.s:433    .text.usb_send:00000000000000f8 $d
+     /tmp/ccBVnRhY.s:670    .bss.isFunctionPressed:0000000000000000 isFunctionPressed
+     /tmp/ccBVnRhY.s:659    .rodata.keyboard_keys_left:0000000000000000 keyboard_keys_left
+     /tmp/ccBVnRhY.s:637    .rodata.keyboard_keys_left_spc:0000000000000000 keyboard_keys_left_spc
+     /tmp/ccBVnRhY.s:648    .rodata.keyboard_keys_right:0000000000000000 keyboard_keys_right
+     /tmp/ccBVnRhY.s:626    .rodata.keyboard_keys_right_spc:0000000000000000 keyboard_keys_right_spc
+     /tmp/ccBVnRhY.s:443    .text.usb_send_clear_keyboard_command:0000000000000000 $t
+     /tmp/ccBVnRhY.s:449    .text.usb_send_clear_keyboard_command:0000000000000000 usb_send_clear_keyboard_command
+     /tmp/ccBVnRhY.s:490    .text.usb_send_task:0000000000000000 $t
+     /tmp/ccBVnRhY.s:496    .text.usb_send_task:0000000000000000 usb_send_task
+     /tmp/ccBVnRhY.s:568    .text.usb_send_task:0000000000000048 $d
+     /tmp/ccBVnRhY.s:574    .rodata.usb_send_task_init.str1.4:0000000000000000 $d
+     /tmp/ccBVnRhY.s:578    .text.usb_send_task_init:0000000000000000 $t
+     /tmp/ccBVnRhY.s:584    .text.usb_send_task_init:0000000000000000 usb_send_task_init
+     /tmp/ccBVnRhY.s:616    .text.usb_send_task_init:000000000000001c $d
+     /tmp/ccBVnRhY.s:623    .rodata.keyboard_keys_right_spc:0000000000000000 $d
+     /tmp/ccBVnRhY.s:634    .rodata.keyboard_keys_left_spc:0000000000000000 $d
+     /tmp/ccBVnRhY.s:645    .rodata.keyboard_keys_right:0000000000000000 $d
+     /tmp/ccBVnRhY.s:656    .rodata.keyboard_keys_left:0000000000000000 $d
+     /tmp/ccBVnRhY.s:667    .bss.isFunctionPressed:0000000000000000 $d
 
 UNDEFINED SYMBOLS
-USBD_HID_SendReport
-vTaskDelay
-keyboard_commands_to_send
-hUsbDeviceFS
 ssd1306_Fill
 ssd1306_SetCursor
 ssd1306_WriteString
 ssd1306_WriteChar
 ssd1306_UpdateScreen
+vTaskDelay
 Font_7x10
+keyboard_commands_to_send
+USBD_HID_SendReport
+hUsbDeviceFS
 xTaskCreate

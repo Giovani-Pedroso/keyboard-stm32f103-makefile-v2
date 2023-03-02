@@ -102,7 +102,8 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
     // if the key pressed was the special layler key
     // will save the state into a variabe to be use latter
     else if (key == 240) {
-      isFunctionPressed = 1;
+
+      isFunctionPressed = !isFunctionPressed;
       key = 0;
     }
   }
@@ -121,6 +122,7 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
     } else if (key == 240) {
       isFunctionPressed = 1;
       key = 0;
+      vTaskDelay(200 / portTICK_PERIOD_MS);
     }
   }
 
@@ -154,6 +156,16 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
   /* vTaskDelay(10 / portTICK_PERIOD_MS); */
 }
 
+void usb_send_clear_keyboard_command(keyboard_command_t *command) {
+  command->keycode_1 = 0;
+  command->keycode_2 = 0;
+  command->keycode_3 = 0;
+  command->keycode_4 = 0;
+  command->keycode_5 = 0;
+  command->modifier_key = 0;
+  ssd1306_UpdateScreen();
+}
+
 /**
          @brief - will checks periodically the keyboard_commands_to_send
                                  buffer to send the command to the usb
@@ -167,40 +179,21 @@ void usb_send_task(void *vParams) {
   uint8_t jump = 0;
 
   while (1) {
-    jump = 0;
     // Send the command if a key was pressed
     if (keyboard_commands_to_send.keycode_1 ||
         keyboard_commands_to_send.modifier_key) {
 
-      /*
-if (repeatKey == 0 && prevKey == keyboard_commands_to_send.keycode_1) {
-for (uint8_t i = 0; i < 200; i++) {
-if (!keyboard_commands_to_send.keycode_1) {
-jump = 1;
-}
-if (prevKey != keyboard_commands_to_send.keycode_1)
-break;
-vTaskDelay(5 / portTICK_PERIOD_MS);
-}
-repeatKey = 1;
-}
-
-if (jump)
-continue;
-      */
       prevKey = keyboard_commands_to_send.keycode_1;
       USBD_HID_SendReport(&hUsbDeviceFS, &keyboard_commands_to_send,
                           sizeof(keyboard_command_t));
 
-      vTaskDelay(30 / portTICK_PERIOD_MS);
+      usb_send_clear_keyboard_command(&keyboard_commands_to_send);
+      vTaskDelay(0100 / portTICK_PERIOD_MS);
+
+      /* while (prevKey == keyboard_commands_to_send.keycode_1) { */
+      /* } */
       // Reset the keyboard commands
-      keyboard_commands_to_send.keycode_1 = 0;
-      keyboard_commands_to_send.keycode_2 = 0;
-      keyboard_commands_to_send.keycode_3 = 0;
-      keyboard_commands_to_send.keycode_4 = 0;
-      keyboard_commands_to_send.keycode_5 = 0;
-      keyboard_commands_to_send.modifier_key = 0;
-      isFunctionPressed = 0;
+      /* usb_send_clear_keyboard_command(&keyboard_commands_to_send); */
 
       USBD_HID_SendReport(&hUsbDeviceFS, &keyboard_commands_to_send,
                           sizeof(keyboard_command_t));
@@ -213,6 +206,7 @@ continue;
     }
     vTaskDelay(10 / portTICK_PERIOD_MS);
   }
+  isFunctionPressed = 0;
 }
 
 void usb_send_task_init() {

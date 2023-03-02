@@ -68,14 +68,25 @@ keyboard_command_t keyboard_commands_to_send;
  * @brief  The application entry point.
  * @retval int
  */
+//test the keys of the keyboard abnt2
 void test_task(void *vparams) {
+	buffer.KEYCODE0 = 0 ;
+	extern USBD_HandleTypeDef hUsbDeviceFS;
+
   while (1) {
-		ssd1306_Fill(White);
-		ssd1306_UpdateScreen();
-		vTaskDelay(500/ portTICK_PERIOD_MS);
-		ssd1306_Fill(Black);
-		ssd1306_UpdateScreen();
-		vTaskDelay(500/ portTICK_PERIOD_MS);
+    vTaskDelay(8000 / portTICK_PERIOD_MS);
+		for(int i=0; i <255; i++){
+			buffer.KEYCODE0 = i;
+			
+      USBD_HID_SendReport(&hUsbDeviceFS, &buffer,
+                          sizeof(keyboard_command_t));
+      vTaskDelay(80 / portTICK_PERIOD_MS);
+
+			buffer.KEYCODE0 = 0;
+      USBD_HID_SendReport(&hUsbDeviceFS, &buffer,
+                          sizeof(keyboard_command_t));
+      vTaskDelay(80 / portTICK_PERIOD_MS);
+		}
   }
 }
 
@@ -101,7 +112,7 @@ int main(void) {
   /* &defaultTask_attributes); */
 
   /* USER CODE BEGIN RTOS_THREADS */
-  /* xTaskCreate(&test_task, "Test_task", 100, NULL, 5, NULL); */
+  /* xTaskCreate(&test_task, "Test_task", 100, NULL, 15, NULL); */
 
   osKernelStart();
 
