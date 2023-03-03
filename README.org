@@ -1,4 +1,4 @@
-#+title:Keyboard - STM32F103
+#+title:Keyboard - STM32F103 (alpha)
 
 A split ortholinear keyboard using the stm32f103 aka blue pill
 
@@ -34,9 +34,10 @@ Comming soon...
 * Known bugs
 
 1. if the user presses a key twice, the computer may not recognize the second press
-2. some times the alt function key is not recognized to the pc
+2. some times the alt function key is not recognized by pc
 
 * Future features
 
 1. the display will show an animation when the user is typing
 2. the encoder will control the volume of the pc
+   
