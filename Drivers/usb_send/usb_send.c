@@ -120,9 +120,11 @@ void usb_send(char keyboarSide, uint8_t column, uint8_t row) {
       keyboard_commands_to_send.modifier_key |= 1 << (key - 232);
       return;
     } else if (key == 240) {
-      isFunctionPressed = 1;
+			if(isFunctionPressed){
+				isFunctionPressed = 0;
+			} else isFunctionPressed = 1;
       key = 0;
-      vTaskDelay(200 / portTICK_PERIOD_MS);
+      vTaskDelay(400 / portTICK_PERIOD_MS);
     }
   }
 
@@ -188,7 +190,7 @@ void usb_send_task(void *vParams) {
                           sizeof(keyboard_command_t));
 
       usb_send_clear_keyboard_command(&keyboard_commands_to_send);
-      vTaskDelay(0100 / portTICK_PERIOD_MS);
+      vTaskDelay(60 / portTICK_PERIOD_MS);
 
       /* while (prevKey == keyboard_commands_to_send.keycode_1) { */
       /* } */
@@ -206,7 +208,7 @@ void usb_send_task(void *vParams) {
     }
     vTaskDelay(10 / portTICK_PERIOD_MS);
   }
-  isFunctionPressed = 0;
+  /* isFunctionPressed = 0; */
 }
 
 void usb_send_task_init() {

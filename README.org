@@ -1,14 +1,42 @@
-* Test keyboard
+#+title:Keyboard - STM32F103
 
-** FreeRtos
+A split ortholinear keyboard using the stm32f103 aka blue pill
 
-+ [x] without initialize the freeRtos the usb send the commands
-+ [x]  initialized the freeRtos the usb send the commands
-+ [x] with the I2C initialized
-+ [x] with the gpio initialied
-+ [x] with the old makefile
-+ [ ] with the sd1306 initialized
-+ [ ]with the mcp23017 initialied
-+ [ ] with the tasks running
+* Materials
 
-  }]]}}
++ 1x stm32f103 - blue pill
++ 1x MCP23017
++ 1x oled display ssd1306
++ 1x rotary encoder
++ 60x switchs
++ 60x diodes 1n4148
++ 2x 11cm x 13cm (4,3'x5,1') pcb 
+
+* How to flash the board
+
+To flash the board the user will need a stlink programmer
+
+** Flashing using the arm-toolchain
+
+1. clone this repository to your machine
+2. open a terminal in the folder that you download
+3. connect the stlink to your computer
+4. run the command:
+
+#+begin_src shell
+make flash
+#+end_src
+
+** Flashing using the STMCubeIde
+
+Comming soon...
+
+* Known bugs
+
+1. if the user presses a key twice, the computer may not recognize the second press
+2. some times the alt function key is not recognized to the pc
+
+* Future features
+
+1. the display will show an animation when the user is typing
+2. the encoder will control the volume of the pc
