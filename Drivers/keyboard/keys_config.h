@@ -19,7 +19,7 @@
 // //------------------------------------
 //Left side
 //------------------------------------
-#define KL_C0_L0 0x35//`- ~ 
+#define KL_C0_L0 0x29//ESC 
 #define KL_C0_L1 0x2B//tab
 #define KL_C0_L2 0x39//caps-lock
 #define KL_C0_L3 100//\ and |
@@ -91,7 +91,7 @@
 #define KR_C5_L0 0x2A//backspace 
 #define KR_C5_L1 0x28//enter
 #define KR_C5_L2 0x4C//delete
-#define KR_C5_L3 0x35//` - ~ 
+#define KR_C5_L3 0x35//' - " 
 #define KR_C5_L4 240//fn
 
 //------------------------------------
